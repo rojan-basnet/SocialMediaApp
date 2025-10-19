@@ -1,0 +1,217 @@
+.profileMainContainer{
+    height: 90vh;
+    width: 100vw;
+    display: flex;
+
+}
+.profileMainSideBar{
+    width: 20%;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+}
+.profileMainSideBar button {
+    border: none;
+    background-color: black;
+    border-radius: 10px;
+    padding: 10px; 
+    color: white;
+    width: 100%;
+    font-size: 1rem;
+    transition: all .3s ease;
+}
+.profileMainSideBar button:hover{
+    background-color: hsl(0, 0%, 10%);
+    scale: 1.01;
+}
+.profileMainSideBar .userFriendsBox {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 10px;
+    transition: all 1s ease;
+    
+}
+@media (max-width:1000px) {
+    .profileMainSideBar .userFriendsBox {
+        grid-template-columns: repeat(1,1fr);
+    }
+}
+.profileMainSideBar .userFriendsBox >div {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    transition:  all .3s ease;
+    background-color: white;
+}
+.profileMainSideBar .userFriendsBox >div:hover{
+    scale: 1.02;
+    border-radius: 5px;
+    translate: 0 -2px;
+}
+.profileMainSideBar .userFriendsBox >div h3 {
+    color: #000000;
+}
+ 
+.profileMainSideBar .userFriendsBox img{
+    width: 100%;
+    height: auto;
+}
+
+.profileMain{
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(149, 157, 177, 0.263);
+}
+.profileHeader{
+    background-color: white;
+    min-height: 500px;
+    box-shadow: 0 2px 3px grey;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+
+}
+
+.PP {
+    background-color: antiquewhite;
+    border-radius: 50%;
+    width: 20%;
+    object-fit: cover;
+    aspect-ratio: 1/1;
+}
+.PP:hover{
+    cursor: pointer;
+}
+.editProfileBtn {
+    text-decoration: none;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+.editProfileBtn button{
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: hsl(218, 44%, 89%);
+    transition: all .3s ease;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 1rem;
+}
+.editProfileBtn button:hover{
+    cursor: pointer;
+    background-color: hsl(218, 44%, 79%);
+
+}
+.moreAccountInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+
+}
+.moreAccountInfo >div{
+    background-color:#e3edf9;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all .3s ease;
+}
+.moreAccountInfo >div:hover{
+    background-color:hsl(213, 65%, 83%);
+    cursor: pointer;
+
+}
+.moreAccountInfo >div h4 {
+    text-align: center;
+}
+.moreAccountInfo >div >div {
+    color:rgb(40, 51, 60);
+    text-align: center;
+
+}
+.profileMainSideBarMBL{
+    display: none;
+}
+@media (max-width:650px) {
+    .profileMainSideBar {
+        display: none;
+    }
+    .profileMain {
+        width: 100%;
+    }
+
+    .profileMainSideBarMBL{
+        width: 100%;
+        display: flex;
+        background-color: white;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 2px 3px grey;
+
+    }
+    .profileMainSideBarMBL .userFriends  >div:first-child{
+        padding: 10px;
+    }
+    .profileMainSideBarMBL button{
+        cursor: pointer;
+        border: none;
+        padding: 10px;
+        border-radius: 10px;
+        transition: all .3s ease;
+        font-weight: bold;
+        font-size: 1rem;
+        background-color: hsl(0, 0%, 80%);
+        border: 1px solid lightblue;
+    }
+    .profileMainSideBarMBL button:hover{
+        background-color: hsl(0, 0%, 90%);
+        transform: translateY(-3px);
+        box-shadow: 1px 1px 3px rgb(171, 217, 255);
+    }
+    .profileMainSideBarMBL .userFriendsBox{
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(3,1fr);
+
+    }
+    .profileMainSideBarMBL .userFriendsBox div{
+        border-radius: 5px;
+        overflow: hidden;
+        color: rgb(221, 221, 221);
+        background-color: black;
+        border: 2px solid rgb(0, 0, 0);
+    }
+    
+    .profileMainSideBarMBL .userFriends >div:first-child{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .profileMainSideBarMBL .userFriendsBox img{
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+}

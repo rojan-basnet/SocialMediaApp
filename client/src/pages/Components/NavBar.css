@@ -1,0 +1,173 @@
+.navBar{
+    background-color: hsl(0, 0%, 100%);
+    box-shadow: 1px 1px 5px rgba(188, 188, 188, 0.719);
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 10vh;
+    padding: 5px;
+}
+.navBar ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    padding: 0;
+}
+.navBar ul li{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0;
+    transition:  background-color .5s ease;
+}
+.navBar >ul >li >a{
+    border-radius: 50%;
+    background-color: hsl(0, 0%, 90%);
+    color: hsl(0, 0%, 0%);
+    padding: 10px;
+}
+
+.navBar  > .end >  li >div:first-child{
+    border-radius: 50%;
+    background-color: hsl(0, 0%, 90%);
+    color: hsl(0, 0%, 0%);
+    padding: 10px;
+
+}
+.navBar  > .end >  .active > div:first-child{
+    background-color: hsl(209, 100%, 40%); 
+    color: rgb(255, 255, 255);
+}
+
+.navBar >ul >li:hover{
+    cursor: pointer;
+    border-bottom:5px solid hsl(0, 0%, 80%); 
+}
+.navBar ul >li.active {
+    border-bottom:5px solid  hsl(209, 100%, 40%);                
+}
+.navBar >ul .active >a {
+    background-color: hsl(209, 100%, 40%); 
+    color: rgb(255, 255, 255);
+}
+.logo a{
+    border-radius: 0;
+    text-decoration: none;
+    background-color: none;
+    color: black;
+}
+
+.navBar .fourth{
+    display:none;
+
+}
+.navBar > .fourth  i {
+    background-color: red;
+}
+.mobileSideNav{ 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    min-height: 100vh;
+    display: none;
+    z-index: 999;
+}
+.mobileSideNav .middleMan{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.306);
+    backdrop-filter: blur(5px);
+}
+.mobileSideNav .middleMan ul{
+    background-color: white;
+    width: clamp(250px,50%,400px);
+    transition: left 1s ease;
+    animation: slideIn 0.4s ease forwards;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    gap: 10px;
+    padding: 10px;
+    overflow-y: auto;
+}
+.mobileSideNav .middleMan ul li{
+    padding: 0;
+    width: 100%;
+    border-radius: 0;
+    background-color: hsl(0, 0%, 90%);
+}
+.mobileSideNav .middleMan >ul >li:last-child {
+    display: flex;
+    flex-direction: column;
+}
+.mobileSideNav .middleMan ul li:last-child div:first-child{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 10px;
+}
+.mobileSideNav .middleMan ul li:last-child >div:nth-child(2){
+    width: 100%;
+}
+
+.profilCHeader{
+    width: 100%;
+}
+.mobileSideNav .middleMan ul li:hover{
+    cursor: pointer;
+    background-color:hsl(0, 0%, 80%); 
+}
+.mobileSideNav .middleMan >ul >li a{
+    text-decoration: none;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+
+}
+.mobileSideNav .backBtn{
+    margin-left: auto;
+    cursor: pointer;
+    
+}
+.mobileSideNav .middleMan .active >a{
+    background-color: rgb(220, 246, 255);
+}
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+@media (max-width:600px) {
+    .navBar .center{
+        display: none;
+    }
+    .navBar .end{
+        display: none;
+    }
+    .navBar .fourth{
+        display: block;
+    }
+    .navBar {
+        padding: 0 20px;
+    }
+    .mobileSideNav {
+        display: block;
+    }
+}

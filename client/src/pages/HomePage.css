@@ -1,0 +1,356 @@
+.homePageFullContainer{
+    height: 90vh;
+    width: 100%;
+    display: flex;
+}
+.homePageMainContainer{
+    width: 80%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: #ECEFF1;
+
+}
+.homePageMain{
+    min-width: 300px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 90%;
+    max-width: 500px;
+    gap: 20px;
+    padding: 20px 0;
+    overflow-y: auto;
+
+}
+
+.homePageMain .singlePost{
+    background-color: white;
+    box-shadow: 0 2px 3px grey;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+}
+.postHeader {
+    display: flex;
+    justify-content: space-between;
+}
+.postHeader >div:first-child{
+    font-size: 1.3rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.singlePost .postTitle{
+    color: hsl(0, 0%, 0%);
+    overflow-wrap: break-word;
+    font-size: 1.2rem;
+    padding: 10px 0;
+}
+.homePageMain  .postTime{
+    font-size: .7rem;
+    font-weight: bold;
+    color: hsl(0, 0%, 65%);
+}
+.homePageMain  .postImages  img{
+    width: 100%;
+    height: auto;
+}
+.homePageMain::-webkit-scrollbar {
+    display: none;
+}
+.postBox{
+    width: 100%;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 2px 3px grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.postBox > img{
+    width: 60px;
+    border-radius: 50%;
+}
+.postBox >img:hover{
+    cursor: pointer;
+}
+.postBox > button{
+    border: none;
+    padding: 10px;
+}
+.postBox >button:hover{
+    cursor: pointer;
+}
+.numOfActions{
+    display: flex;
+    padding: 10px 0;
+    justify-content: space-between;
+    align-items: center;
+    color:rgba(128, 128, 128, 0.742);
+}
+.numOfActions div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+.numOfActions div:hover{
+    color:hsla(0, 0%, 46%, 0.801);
+    cursor: pointer;
+}
+.postActions{
+    border-top: 1px solid rgb(190, 190, 190);
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    padding-top: 10px;
+}
+.postActions div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: grey;
+    height: 100%;
+    padding: 10px 0;
+    transition: all .3s ease;
+    border-radius: 10px;
+}
+.postActions div:hover{
+    background-color: rgba(222, 222, 222, 0.826);
+    cursor: pointer;
+}
+.commentBox{
+    top: 0;
+    left: 0;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    backdrop-filter: blur(5px);
+    background-color: hsla(0, 0%, 0%, 0.269);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.commentBox .singlePost{
+    width: 80%;
+    max-width: 800px;
+    min-width: 300px;
+    background-color:white ;
+    height: 90%;
+}
+
+.commentBox .postHeader{
+    height: 10%;
+}
+
+.commentBox .postTop{
+    display: flex;
+    justify-content: space-between;
+}
+.commentBox .postHeader .exitCmt{
+    color: grey;
+}
+.exitCmt:hover{
+    cursor: pointer;
+}
+.commentBox .postContent{
+    height: 80%;
+    overflow-y: auto;
+}
+.commentBox .singlePost .youCmt{
+    background-color: rgb(220, 220, 220);
+    border-radius: 5px;
+    padding: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.cmtFromContainer{
+    height: 10%;
+    background-color: white;
+    padding: 20px 0;
+}
+.youCmt input{
+    border: none;
+    background-color: rgb(220, 220, 220);
+    width: 100%;
+}
+.youCmt input:focus{
+    box-shadow: none;
+    outline:none;
+    border: none;
+}
+.youCmt button{
+    background-color: rgb(220, 220, 220);
+    border:none;
+}
+.youCmt button:hover {
+    cursor: pointer;
+}
+.CmtTittle{
+    border-top:1px solid rgb(206, 206, 206) ;
+    border-bottom:1px solid rgb(194, 194, 194) ;
+    text-align: center;
+    font-size: 1rem;
+    color: rgb(4, 4, 4);
+}
+.allcomments{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 0;
+}
+.allcomments .eachCmts{
+    background-color: rgba(62, 70, 75, 0.112);
+    border-radius: 10px;
+    padding: 10px;
+    overflow-wrap: break-word;
+}
+.eachCmts .commenters{
+    font-weight: bold;
+}
+.noCmt {
+    text-align: center;
+    color: grey;
+}
+.postImages {
+  display: grid;
+  gap: 5px;
+  margin-top: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+
+}
+.postImages.two {
+    grid-template-columns: repeat(2,1fr);
+}
+.postImages.two img{
+    object-fit: cover;
+    aspect-ratio: 1/1;
+}
+.postImages.three {
+    grid-template-areas:
+    "first second"
+    "first third"
+}
+.postImages.three img {
+    min-height: 100%;
+    object-fit: cover;  
+    display: block;     
+}
+.postImages.three img:nth-child(1){
+    grid-area: first;
+}
+.postImages.three img:nth-child(2){
+    aspect-ratio: 1/1;
+    grid-area: second;
+}
+.postImages.three img:nth-child(3){
+    aspect-ratio: 1/1;
+    grid-area: third;
+}
+.postImages.four{
+    grid-template-columns: repeat(2,1fr);
+    grid-template-rows: repeat(2,1fr);
+}
+.postImages.four img{
+    object-fit: cover;
+    aspect-ratio: 1/1;
+}
+.postImages.more {
+    grid-template-columns: repeat(2,1fr);
+    grid-template-rows: repeat(2,1fr);
+}
+.postImages.more img{
+    object-fit: cover;
+    aspect-ratio: 1/1;
+}
+.showMore{
+    grid-column-start: 1;
+    grid-column-end: 3;
+    background-color: rgba(61, 61, 61, 0.256);
+    width: 100%;
+    text-align: center;
+}
+.showMore:hover{
+    cursor: pointer;
+    background-color: rgba(61, 61, 61, 0.37);
+
+}
+.homePageSide{
+    width: 20%;
+    height: 100%;
+    border-right: 1px solid rgb(157, 157, 157);
+
+}
+.searchInputBox{
+    border: 1px solid #ededed;
+    background-color: rgb(241, 241, 241);
+    width: 100%;
+    padding: 10px;
+    box-shadow: 1px 1px 3px rgb(207, 207, 207);
+
+}
+.searchInputBox:focus{
+    border: none;
+    outline: 1px solid rgb(115, 201, 255);
+}
+.searchFilterBox{
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid rgb(203, 203, 203);
+    box-shadow: 1px 1px 3px rgb(207, 207, 207),-1px -1px 3px rgb(207, 207, 207);
+    padding: 5px;
+}
+
+.searchFilterBox >div{
+    padding: 5px;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #ECEFF1;
+}
+.searchFilterBox >div >div { 
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #ededed;
+    box-shadow: 1px 1px 3px rgb(207, 207, 207),-1px -1px 3px rgb(207, 207, 207);
+
+}
+.searchFilterBox img{
+    height: 64px;
+    border-radius: 50%;
+    display: block;
+    width: auto;
+}
+.searchFilterBox img:hover{
+    cursor: pointer;
+}
+.defaultSearchBox{
+    height: 20%;
+}
+
+@media (max-width:600px) {
+    .homePageSide{
+        display: none;
+    }
+    .homePageMainContainer{
+        width: 100%;
+    }
+}
+@media (max-width:500px) {
+    .commentBox .singlePost{
+        height: 90%;
+        width: 100%;
+    }
+}

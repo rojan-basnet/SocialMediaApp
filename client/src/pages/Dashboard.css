@@ -1,0 +1,53 @@
+.profileEditFrom{
+    background-color: rgb(238, 238, 238);
+    width: 100vw;
+    height: 90vh ;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.profileEditFromInner {
+    background-color: rgb(255, 255, 255);
+    box-shadow: 1px 1px 5px grey;
+}
+.profileEditFrom form{
+    padding: 10px;
+}
+.profileEditFrom form .profilePicPreview{
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    position: relative;
+
+}
+.profilePicPreview img{
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.profilePicPreview .cameraIcon{
+    position: absolute;
+    background-color: hsl(0, 0%, 90%);
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    bottom: 0;
+    right: 0;
+    z-index: 2;
+    transition: all .3s ease;
+    border: 1px solid black;
+
+}
+.profilePicPreview .cameraIcon:hover{
+    cursor: pointer;
+    background-color: hsl(0, 0%, 80%);
+}
+.userInfoEditForm {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid;
+}
