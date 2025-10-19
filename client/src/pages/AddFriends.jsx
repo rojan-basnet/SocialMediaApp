@@ -4,7 +4,7 @@ import { Toaster,toast } from "sonner"
 import api from "../api/axios.js"
 import { useEffect, useState } from "react"
 import {useParams,useNavigate} from 'react-router-dom'
-import './Addfriends.css'
+import './AddFriends.css'
 
 const AddFriends = () => {
 const { userId } = useParams()
