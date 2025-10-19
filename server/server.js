@@ -9,10 +9,13 @@ import { User } from './models/User.js'
 import cookieParser from 'cookie-parser'
 import jwtVerfiy from './middleware/verifyJWT.js'
 import Message from './models/Message.js'
-import mongoose from 'mongoose'
+import path from 'path'
 import { Post } from './models/Posts.js'
 
 dotenv.config()
+const __dirname=path.resolve()
+
+
 const PORT=process.env.PORT|| 5000
 const app=express()
 app.use(cors({
@@ -326,10 +329,6 @@ app.post('/getOhterUserPost',jwtVerfiy,async (req,res)=>{
         res.status(500)
     }
 })
-const server=app.listen(PORT, ()=>{
-    connectDb()
-    console.log("server on ",PORT)
-})
 app.post('/changeUserInfo' ,async (req,res)=>{
     const {userId,newUserInfo}=req.body
     const {name,bio,profession,hobbies}=newUserInfo
@@ -341,6 +340,21 @@ app.post('/changeUserInfo' ,async (req,res)=>{
         res.status(500) 
     }
 })
+
+if(process.env.NODE_ENV=="productoin"){
+    const frontendPath = path.join(__dirname, '../client', 'dist');
+    app.use(express.static(frontendPath))
+
+    app.use((req,res)=>{
+        res.sendFile(path.join(frontendPath,"index.html"))
+    })
+}
+
+const server=app.listen(PORT, ()=>{
+    connectDb()
+    console.log("server on ",PORT)
+})
+
 
 const io=new Server(server,{cors:{origin:'http://localhost:5173'}})
 const userRooms=new Map()
