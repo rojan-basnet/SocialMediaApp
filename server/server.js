@@ -15,7 +15,6 @@ import { Post } from './models/Posts.js'
 dotenv.config()
 const __dirname=path.resolve()
 
-
 const PORT=process.env.PORT|| 5000
 const app=express()
 app.use(cors({
@@ -340,7 +339,10 @@ app.post('/changeUserInfo' ,async (req,res)=>{
 })
 
 if(process.env.NODE_ENV=="production"){
-    const frontendPath = path.join(__dirname, '../client', 'dist');
+    const frontendPath = path.join(__dirname, 'client', 'dist');
+    console.log("NODE_ENV:", process.env.NODE_ENV)
+    console.log(frontendPath)
+
     app.use(express.static(frontendPath))
 
     app.use((req,res)=>{
