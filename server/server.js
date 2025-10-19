@@ -25,9 +25,7 @@ app.use(cors({
 app.use(cookieParser())
 app.use(express.json())
 
-app.get('/',(req,res)=>{
-    res.send("hi")
-})
+
 function generateTokens(id,userName){
     const generateAccessToken=jwt.sign({id, username:userName },process.env.JWT_A_SECRET,{expiresIn:"15m"})
     const generateRefreshToken=jwt.sign({id, username: userName },process.env.JWT_R_SECRET,{expiresIn:"7d"})
@@ -341,7 +339,7 @@ app.post('/changeUserInfo' ,async (req,res)=>{
     }
 })
 
-if(process.env.NODE_ENV=="productoin"){
+if(process.env.NODE_ENV=="production"){
     const frontendPath = path.join(__dirname, '../client', 'dist');
     app.use(express.static(frontendPath))
 
