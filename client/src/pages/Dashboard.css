@@ -1,18 +1,40 @@
 .profileEditFrom{
-    background-color: rgb(238, 238, 238);
     width: 100vw;
     height: 90vh ;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow-y: auto;
+    
+}
+.ppChangeBox {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 .profileEditFromInner {
-    background-color: rgb(255, 255, 255);
-    box-shadow: 1px 1px 5px grey;
+    display: flex;
+    gap: 20px;
 }
 .profileEditFrom form{
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px grey;
+
+    
+}
+.profileEditFromInner form:first-child button{
+    border: none;
+    border-radius: 10px;
     padding: 10px;
+    background-color:   #ff9c32;
+    cursor: pointer;
+    transition:  all .3s ease;
+}
+.profileEditFromInner form:first-child button:hover{
+    background-color: hsl(31, 100%, 70%);
 }
 .profileEditFrom form .profilePicPreview{
     width: 128px;
@@ -39,15 +61,66 @@
     right: 0;
     z-index: 2;
     transition: all .3s ease;
-    border: 1px solid black;
+
 
 }
 .profilePicPreview .cameraIcon:hover{
     cursor: pointer;
     background-color: hsl(0, 0%, 80%);
+    scale: 1.05;
 }
 .userInfoEditForm {
     display: flex;
     flex-direction: column;
-    border: 1px solid;
+    align-items: center;
+    gap: 20px;
+
+}
+.userInfoEditForm input{
+    width: 100%;
+    padding: 5px;
+}
+.userInfoEditForm input:focus{
+    outline: none;
+}
+.userInfoEditForm button {
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #007bff;
+    cursor: pointer;
+    width: 100%;
+    transition:  all .3s ease;
+}
+.userInfoEditForm button:hover{
+    background-color: hsl(211, 100%, 60%);;
+
+}
+.userInfoEditForm div {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+}
+@media (max-width:450px) {
+    .profileEditFrom {
+        align-items: flex-start;
+
+    }
+    .profileEditFromInner {
+        flex-direction: column;
+        padding: 30px 0;
+    }
+    .profileEditFromInner form{
+        width: 100%;
+    }
+    .profileEditFromInner .ppChangeBox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .ppChangeBox button{
+        width: 100%;
+    }
 }

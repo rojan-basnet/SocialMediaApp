@@ -157,11 +157,12 @@
     .sideBar ul li{
         border-radius: 0;
         height: 100%;
-        width: auto;
-        padding: 0;
+        width: 100%;
         gap: 0;
         border: none;
         box-shadow: none;
+        display: flex;
+        justify-content: center;
     }
     .sideBar ul li i {
         border-radius: 0;

@@ -1,11 +1,13 @@
 import axios from 'axios'
 import {Toaster,toast} from 'sonner'
+import {EyeOff,Eye} from 'lucide-react'
 import './Home.css'
 import {useState} from 'react'
 import {useNavigate,Link} from 'react-router-dom'
 
 const SignIn = () => {
 const [user,setUser]=useState({userName:"",email:"",password:""})
+const [showPSWD,setshowPSWD]=useState(false)
 const navigate=useNavigate()
  
 function handleUserAuth(e){
@@ -37,7 +39,15 @@ function handleUserAuth(e){
         <form onSubmit={handleUserAuth}>
             <input type="text" placeholder='Username' value={user.userName} onChange={e=>setUser({...user,userName:e.target.value})}/>
             <input type="email"  placeholder='User1@gmail.com' value={user.email} onChange={e=>setUser({...user,email:e.target.value})} autoComplete="email"/>
-            <input type="password" placeholder='password' value={user.password} onChange={e=>setUser({...user,password:e.target.value})}/>
+            <div className='pswdEnterSigin'>
+            <input type={showPSWD? "text":"password"} placeholder='password' value={user.password} onChange={e=>setUser({...user,password:e.target.value})}/>
+            {
+              showPSWD && <Eye onClick={()=>setshowPSWD(false)}/>
+            }
+            {
+              !showPSWD && <EyeOff onClick={()=>setshowPSWD(true)}/>
+            }
+            </div>
             <button type='submit'  >Create</button>
             <div>Already have Account? <Link to={'/logIn'}>Log In</Link></div>
         </form>

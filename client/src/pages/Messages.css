@@ -91,57 +91,57 @@
 
 .myMessageWrapper,
 .friendMessageWrapper {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;  
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;  
 }
 
 
 .timeStampMessage {
-  width: 100%;
-  font-size: 0.75rem;
-  color: rgba(0,0,0,0.6);
-  opacity: 0.9;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  gap: 8px;
+    width: 100%;
+    font-size: 0.75rem;
+    color: rgba(0,0,0,0.6);
+    opacity: 0.9;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
 }
 
 .myMessageWrapper .timeStampMessage {
-  text-align: right;
-  justify-content: flex-end;
-  padding-right: 20px;
+    text-align: right;
+    justify-content: flex-end;
+    padding-right: 20px;
 }
 
 .friendMessageWrapper .timeStampMessage {
-  text-align: left;
-  justify-content: flex-start;
-  padding-left: 6px;
+    text-align: left;
+    justify-content: flex-start;
+    padding-left: 6px;
 }
 
 .bubble {
-  display: inline-block;
-  width: fit-content;     
-  max-width: 70%;         
-  padding: 10px 12px;
-  font-size: 1rem;
-  word-wrap: break-word;
-}
+    display: inline-block;
+    width: fit-content;     
+    max-width: 70%;         
+    padding: 10px 12px;
+    font-size: 1rem;
+    word-wrap: break-word;
+    }
 
 
 .myMessage {
-  background-color: rgb(115, 178, 255);
-  color: white;
-  border-radius: 10px 10px 0 10px;
-  align-self: flex-end;   
+    background-color: hsl(214, 89%, 55%);
+    color: white;
+    border-radius: 10px 10px 0 10px;
+    align-self: flex-end;   
 }
 
 .friendMessage {
-  background-color: hsla(0, 0%, 84%, 0.646);
-  border-radius: 10px 10px 10px 0;
-  align-self: flex-start; 
+    background-color: hsla(0, 0%, 84%, 0.646);
+    border-radius: 10px 10px 10px 0;
+    align-self: flex-start; 
 }
 
 .chatBoxMain .chatBoxInput{
@@ -199,7 +199,7 @@
     width: 100vw;
     height: 100vh;
     display: none;
-
+    z-index: 999;
 }
 .friendsDisplaymobile .middleMan{
     position: fixed;
@@ -233,10 +233,14 @@
     justify-content: space-between;
     padding: 10px;
 }
-.headerDisFriends i:hover{
+.headerDisFriends i:hover{ 
     cursor: pointer;
 }
+.noPrevMessages {
+    color: grey;
+    text-align: center;
 
+}
 .chatBoxRest {
   padding: 30px 10px;
   height: 80%;
@@ -244,6 +248,35 @@
   flex-direction: column;
   gap: 20px;
   overflow-y: auto;
+}
+.noFrnds{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.noFrnds >div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-size: 1rem;
+    color:grey;
+}
+.noFrnds > div  button {
+    border: none;
+    border-radius: 10px; 
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: hsl(214, 89%, 52%);
+    color: hsl(0, 0%, 100%);
+    gap: 10px;
+    transition: all .3s ease;
+}
+.noFrnds button:hover{
+    background-color: hsl(214, 89%, 62%);;
 }
 
 @media (max-width:700px) {

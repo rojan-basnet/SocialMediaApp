@@ -35,7 +35,7 @@ const NewPost = () => {
               setPost(newPost)
               
               api.post('/uploadPost',{newPost})
-              .then(res=>{toast.success("Post uploaded",{id:newToast});setIsUploading(false)})
+              .then(res=>{toast.success("Post uploaded",{id:newToast});setIsUploading(false);handleCancelAddingPost()})
               .catch(err=>{console.log(err);toast.error("There was an Error",{id:newToast});setIsUploading(false)})
             }
           }
@@ -60,18 +60,18 @@ const NewPost = () => {
           }
           const newPost={...post,images:imageURLs}
           api.post('/uploadPost',{newPost})
-              .then(res=>{toast.success("Post uploaded",{id:newToast});setIsUploading(false)})
+              .then(res=>{toast.success("Post uploaded",{id:newToast});setIsUploading(false);handleCancelAddingPost()})
               .catch(err=>{console.log(err);toast.error("There was an Error",{id:newToast});setIsUploading(false)})
         }
 
       }else if(!file){
         api.post('/uploadPost',{newPost:post})
-        .then(res=>{toast.success("Post uploaded",{id:newToast})})
-        .catch(err=>{console.log(err);toast.error("There was an Error",{id:newToast})})
+        .then(res=>{toast.success("Post uploaded",{id:newToast});handleCancelAddingPost();setIsUploading(false)})
+        .catch(err=>{console.log(err);toast.error("There was an Error",{id:newToast});setIsUploading(false)})
       }
 
     }else{
-      return toast.error("Empty fields")
+      return toast.error("Empty fields") 
     }
 
   }

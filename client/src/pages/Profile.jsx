@@ -16,6 +16,7 @@ const Profile = () => {
     const [thisPostOfCmt,setThisPostOfCmt]=useState({})
     const [friends,setFriends]=useState([])
     const [postID,setPostID]=useState("")
+    const [frndsLength,setFrndsLength]=useState(0)
     const scrollRef=useRef()
     const navigate=useNavigate()
 
@@ -27,14 +28,19 @@ const Profile = () => {
 
     function getUserData(){
         api.post("/getUserData",{userId})
-        .then(res=>{setUser(res.data.user)})
+        .then(res=>{setUser(res.data.user);getNumFrnds(res.data.user.friends)})
         .catch(err=>{console.log(err)})
+
     }
     function getUserPosts(){
         api.post("/getUserPost",{userId})
         .then(res=>{setPosts(res.data.posts)})
         .catch(err=>{console.log(err)})
-
+    }
+    function getNumFrnds(frnds){
+        let count=0
+        frnds.forEach(ele=>{if(ele.status=='accepted')count++})
+        setFrndsLength(count)
     }
     useEffect(()=>{
         getUserData()
@@ -96,11 +102,15 @@ const Profile = () => {
   function hasLiked(reacts){
     return reacts.some(r=>r.reacterId==userId)
   }
-  function handleFriendsBtnClick(){
+  function handleFriendsBtnClick(){ 
+    let frnds=[]
     api.post('/friends',{userId})
     .then(res=>{
-      console.log(res.data.friends)
-      setFriends(res.data.friends)
+      res.data.friends.forEach(element => {
+          if(element.status==='accepted'){
+            frnds.push(element)
+          }})
+          setFriends(frnds)
     })
     .catch(err=>{
       console.log(err)
@@ -112,7 +122,7 @@ const Profile = () => {
     <div className="profileMainContainer">
         <div className="profileMainSideBar">
             <button className="userFriends" onClick={handleFriendsBtnClick}>
-              <div>Friends {user?.friends?.length} </div>
+              <div>{`Friends ${frndsLength}`} </div>
               <div className="userFriendsBox">
                 {
                   friends.map((ele,index)=>{
@@ -153,7 +163,7 @@ const Profile = () => {
             </div>
         <div className="profileMainSideBarMBL">
             <button className="userFriends" onClick={handleFriendsBtnClick}>
-              <div ><div>Friends {user?.friends?.length}</div><div><ChevronDown/></div> </div>
+              <div ><div>{`Friends ${frndsLength}`}</div><div><ChevronDown/></div> </div>
               <div className="userFriendsBox">
                 {
                   friends.map((ele,index)=>{
@@ -165,7 +175,7 @@ const Profile = () => {
                 }
               </div>
             </button>
-            <button> Posts {posts?.length}</button>
+            <button> Posts {posts?.length}</button> 
         </div>
         <div className="postBox">
           <NewPost/>

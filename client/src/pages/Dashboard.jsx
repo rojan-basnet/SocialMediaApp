@@ -141,19 +141,29 @@ const {userId}=useParams()
               <button type='submit'>Save</button>
             </div>
           </form>
+
           <form className='userInfoEditForm' onSubmit={handleUserInfoChange}>
+            <div>
             <label htmlFor="name">Name: </label>
             <input type="text" value={newUserInfo.name} id="name" onChange={e=>setNewUserInfo({...newUserInfo,name:e.target.value})}/>
+            </div>
+            <div>
             <label htmlFor="bio">Bio: </label>
             <input type="text"  id="bio" value={newUserInfo.bio} onChange={e=>setNewUserInfo({...newUserInfo,bio:e.target.value})}/>
+            </div>
+            <div>
             <label htmlFor="hobby">Hobbies: </label>
             <input type="text"  id="hobby" value={newUserInfo.hobbies} onChange={e=>setNewUserInfo({...newUserInfo,hobbies:e.target.value})}/>
+            </div>
+            <div>
             <label htmlFor="proffession">Profession / study field: </label>
             <input type="text"  id="proffession" value={newUserInfo.profession} onChange={e=>setNewUserInfo({...newUserInfo,profession:e.target.value})}/>
+            </div>
+
             <button type='submit'> Save</button>
           </form>
         </div>
-      </div>
+      </div> 
 
     </>
   )

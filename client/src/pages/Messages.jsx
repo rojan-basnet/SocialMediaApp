@@ -5,7 +5,7 @@ import api from "../api/axios.js"
 import NavBar from "./Components/NavBar.jsx"
 import {io} from 'socket.io-client'
 import TypingBubble from "./Components/TypingBubble.jsx"
-import { SendHorizonal,ArrowLeft,X } from "lucide-react"
+import { SendHorizonal,ArrowLeft,X,UserPlus } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 const Messages = () => {
@@ -131,7 +131,7 @@ function handleMessageTyping(typingText){
                         <div>{selectedChat.frndName}</div>
                     </div>
  
-                    <div className="chatBoxRest">
+                    <div className="chatBoxRest"> 
                         { allMessages.length!==0 &&
                             allMessages.map((ele,index)=>{
                                 return     <div key={index} className={userId==ele.sender_id?"myMessageWrapper" : "friendMessageWrapper"} >
@@ -147,7 +147,7 @@ function handleMessageTyping(typingText){
                                 
                             })
                         }{
-                            allMessages.length==0 && <div>No messages</div>
+                            allMessages.length==0 && <div className="noPrevMessages">No messages</div>
                         }{isTyping&&<TypingBubble/>}
                         
                     <div ref={messagesEndRef} />
@@ -163,8 +163,11 @@ function handleMessageTyping(typingText){
             }
             {
                 friends.length==0 &&
-                <div className="chatBoxMain">
-                    Add more friends to chat
+                <div className="chatBoxMain noFrnds">
+                    <div>
+                        <div>Add friends to chat</div>
+                        <button onClick={()=>{navigate(`/${userId}/dashboard/addFriends`)}}>Add Friends <UserPlus/></button>
+                    </div>
                 </div>
             }
             </div>

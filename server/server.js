@@ -11,9 +11,11 @@ import jwtVerfiy from './middleware/verifyJWT.js'
 import Message from './models/Message.js'
 import path from 'path'
 import { Post } from './models/Posts.js'
+import { RefreshTokenM } from './models/RefreshToken.js'
 
-dotenv.config()
+
 const __dirname=path.resolve()
+dotenv.config();
 
 const PORT=process.env.PORT|| 5000
 const app=express()
@@ -28,7 +30,6 @@ app.use(express.json())
 function generateTokens(id,userName){
     const generateAccessToken=jwt.sign({id, username:userName },process.env.JWT_A_SECRET,{expiresIn:"15m"})
     const generateRefreshToken=jwt.sign({id, username: userName },process.env.JWT_R_SECRET,{expiresIn:"7d"})
-
     return {generateAccessToken,generateRefreshToken}
 }
 app.post('/sendFrndReq',async  (req,res)=>{
@@ -45,6 +46,18 @@ app.post('/sendFrndReq',async  (req,res)=>{
     }
 })
 
+app.delete('/deleteToken',async (req,res)=>{ 
+    const {refreshToken}=req.cookies
+
+    try{
+        const delToken=await RefreshTokenM.findOneAndDelete({rToken:refreshToken})
+        if(delToken==null) return res.status(404).json({success:false})
+        res.status(200).json({success:true})
+    }catch(err){
+        res.status(500).json({success:false})
+    }
+})
+
 app.post('/SignUp', async (req,res)=>{
     const data=req.body
     if(data.email && data.password && data.userName){
@@ -54,6 +67,8 @@ app.post('/SignUp', async (req,res)=>{
             const createdUser=await User.create(newUser)
             const {generateAccessToken,generateRefreshToken}=generateTokens(createdUser._id,createdUser.name)
 
+            const newR_Token=new RefreshTokenM({rToken:generateRefreshToken})
+            await newR_Token.save()
             res.cookie("refreshToken",generateRefreshToken,{
                 httpOnly: true,
                 secure: false, 
@@ -340,8 +355,6 @@ app.post('/changeUserInfo' ,async (req,res)=>{
 
 if(process.env.NODE_ENV=="production"){
     const frontendPath = path.join(__dirname, 'client', 'dist');
-    console.log("NODE_ENV:", process.env.NODE_ENV)
-    console.log(frontendPath)
 
     app.use(express.static(frontendPath))
 

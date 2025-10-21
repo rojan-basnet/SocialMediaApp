@@ -33,7 +33,7 @@ const HomePage = () => {
 
   function handlePostsFetch(){
     api.get('/fetchPosts')
-    .then(res=>{console.log(res.data.posts);setPosts(res.data.posts)})
+    .then(res=>{setPosts(res.data.posts)})
     .catch(err=>console.log(err))
 
   }
@@ -80,7 +80,7 @@ const HomePage = () => {
   }
   function handleShareAction(){
     api.post('/postShare',{userId})
-    .then(res=>{console.log(res.data);})
+    .then(res=>{console.log(res.data);}) 
     .catch(err=>console.log(err))
   }
   function handleCommentClick(postid){ 

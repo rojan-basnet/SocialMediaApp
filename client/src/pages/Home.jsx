@@ -1,13 +1,19 @@
 
 import { Link } from "react-router-dom"
 
-const Home = () => {
 
+const Home = () => {
 
   return (
     <>
-      <Link to={'/signIn'}> <button>Sign up</button> </Link>
-      <Link to={'/logIn'}><button>Log in</button> </Link>
+      <div className="homeNav">
+        <Link to={'/signIn'}> <button>Sign up</button> </Link>
+        <Link to={'/logIn'}><button>Log in</button> </Link>
+      </div>
+      <div className="homeRest"> 
+        
+      </div>
+
     </>
   )
 }

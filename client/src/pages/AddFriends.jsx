@@ -13,7 +13,7 @@ const [allUser,setAllUser]=useState([])
 
 async function handleUsersFetch(){
   await api.post('/allUsers',{userId})
-  .then(res=>{setAllUser(res.data.allUsers);console.log(res.data.allUsers)})
+  .then(res=>{setAllUser(res.data.allUsers)})
   .catch(err=>{console.error(err);toast.error("There was an error")})
 }   
 

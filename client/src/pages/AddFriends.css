@@ -44,6 +44,8 @@
     color: hsl(209, 100%, 37%);
     position: relative;
     z-index: 0;
+    padding: 10px;
+    border-radius: 50%;
 }
 .showAllUsers div i svg {
     position:  relative;
