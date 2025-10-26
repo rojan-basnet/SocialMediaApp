@@ -104,10 +104,11 @@ const HomePage = () => {
   }
   function handleSearchStringChange(e){
     const thisSearch=e.target.value
+    const thisSearchLower=thisSearch.toLowerCase()
     setSearchString(thisSearch)
     if(thisSearch.trim().length!==0){
       const names=allUsers.filter(ele=>{
-        return ele.name.includes(thisSearch)
+        return ele.name.toLowerCase().includes(thisSearchLower)
       })
       setFilteredUsers(names)
     }else{

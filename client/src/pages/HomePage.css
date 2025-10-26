@@ -11,6 +11,10 @@
     background-color: #ECEFF1;
 
 }
+.homePageSide {
+    width: 20%;
+    height: 100%;
+}
 .homePageMain{
     min-width: 300px;
     height: 100%;
@@ -296,18 +300,20 @@
     width: 100%;
     padding: 10px;
     box-shadow: 1px 1px 3px rgb(207, 207, 207);
-
+    height: 10%;
 }
 .searchInputBox:focus{
     border: none;
     outline: 1px solid rgb(115, 201, 255);
 }
 .searchFilterBox{
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     border-radius: 5px;
     border: 1px solid rgb(203, 203, 203);
     box-shadow: 1px 1px 3px rgb(207, 207, 207),-1px -1px 3px rgb(207, 207, 207);
     padding: 5px;
+    overflow-y: auto;
+    max-height: 90%;
 }
 
 .searchFilterBox >div{

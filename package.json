@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm install && npm install --prefix client && npm run build --prefix client",
     "start": "cross-env NODE_ENV=production node server/server.js",
-    "dev":"nodemon --env-file=.env server/server.js"
+    "dev": "nodemon --env-file=.env server/server.js"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +21,8 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.19.0",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "cross-env": "^10.1.0"

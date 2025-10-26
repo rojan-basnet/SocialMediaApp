@@ -19,6 +19,7 @@ const OtherProfile = () => {
     const [postID,setPostID]=useState("")
     const [frndsLength,setFrndsLength]=useState(0)
     const scrollRef=useRef()
+    const [showFrnds,setShowFrnds]=useState(false)
     const navigate=useNavigate()
 
   useEffect(() => {
@@ -43,7 +44,10 @@ const OtherProfile = () => {
         frnds.forEach(ele=>{if(ele.status=='accepted')count++})
         setFrndsLength(count)
     }
+
     useEffect(()=>{
+        setFriends([])
+        setShowFrnds(false)
         getUserData()
         getUserPosts()
     },[otherId])
@@ -105,6 +109,7 @@ const OtherProfile = () => {
     return reacts.some(r=>r.reacterId==userId)
   }
   function handleFriendsBtnClick(){
+    setShowFrnds(true)
     let frnds=[]
 
     api.post('/friends',{userId:otherId})
@@ -127,9 +132,9 @@ const OtherProfile = () => {
             <button className="userFriends" onClick={handleFriendsBtnClick}>
               <div>{`Friends ${frndsLength}`} </div>
               <div className="userFriendsBox">
-                {
+                { showFrnds &&
                   friends.map((ele,index)=>{
-                    return <div key={index} onClick={()=>navigate(`/${userId}/dashboard/${ele.friendId._id}`)} >
+                    return <div key={index} onClick={()=>{navigate(`/${userId}/dashboard/${ele.friendId._id}`)}} >
                       <img src={ele.friendId.profilePic?ele.friendId.profilePic:"/default_pp.jpg"} />
                       <h3>{ele.frndName}</h3>
                     </div>
@@ -166,7 +171,7 @@ const OtherProfile = () => {
             <button className="userFriends" onClick={handleFriendsBtnClick}>
               <div ><div>{`Friends ${frndsLength}`}</div><div><ChevronDown/></div> </div>
               <div className="userFriendsBox">
-                {
+                { showFrnds &&
                   friends.map((ele,index)=>{
                     return <div key={index} onClick={()=>{navigate(`/${userId}/dashboard/${ele.friendId._id}`);}} >
                       <img src={ele.friendId.profilePic?ele.friendId.profilePic:"/default_pp.jpg"} />

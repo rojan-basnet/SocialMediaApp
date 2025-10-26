@@ -6,6 +6,8 @@ import { connectDb } from './config/db.js'
 import { Server } from 'socket.io'
 import jwt from 'jsonwebtoken'
 import { User } from './models/User.js'
+import {NotifiSub} from './models/NotifiSubscribe.js'
+import webpush from 'web-push';
 import cookieParser from 'cookie-parser'
 import jwtVerfiy from './middleware/verifyJWT.js'
 import Message from './models/Message.js'
@@ -25,6 +27,12 @@ app.use(cors({
 }))
 app.use(cookieParser())
 app.use(express.json())
+
+webpush.setVapidDetails(
+  'mailto:you@example.com',
+  process.env.NOTI_PUBLIC_KEYS,
+  process.env.NOTI_PRIVATE_KEYS
+);
 
 
 function generateTokens(id,userName){
@@ -352,6 +360,43 @@ app.post('/changeUserInfo' ,async (req,res)=>{
         res.status(500) 
     }
 })
+app.post('/subscribe',async (req,res)=>{
+    const {subscription,userId}=req.body
+
+    if(subscription && userId){
+    try{
+        const newNotiSub=new  NotifiSub({subsId:userId,subscription})
+        await newNotiSub.save()
+        res.status(200).json({message:"notifications allowed"})
+    }catch(err){
+        res.status(500)
+    }
+    }
+    return res.status(400)
+
+})
+
+app.post('/send-notification', async (req, res) => {
+    const {toSend,message,userId}=req.body
+    try{
+        const subscriber= await NotifiSub.findOne({subsId:toSend})
+        const notiSender= await User.findById(userId,{_id:0,profilePic:1,name:1})
+
+        if(subscriber && notiSender){
+            const payload = JSON.stringify({title: notiSender.name,body: message,icon:notiSender.profilePic|| `${process.env.FRONTEND}/default_pp.jpg`});
+            await webpush.sendNotification(subscriber.subscription, payload)
+            res.status(200).json({message:"message sent",payload})
+
+        }else{
+            res.status(200).json({data:"not subscribed"})
+        }
+
+    }catch(err){
+        console.log(err)
+        res.status(500).json({message:"server error"})
+    }
+
+});
 
 if(process.env.NODE_ENV=="production"){
     const frontendPath = path.join(__dirname, 'client', 'dist');
@@ -396,7 +441,6 @@ io.on('connection',async (socket)=>{
         const roomName=[userId,friendId].sort().join("_")
         socket.join(roomName)
         userRooms.set(socket.id,roomName)
-        console.log(userRooms)
     })
     socket.on("typing",()=>{
         const room=userRooms.get(socket.id)

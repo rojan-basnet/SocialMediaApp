@@ -61,6 +61,11 @@ function handleMsgSent(e){
     const msgToSend={sender_id:userId,receiver_id:selectedChat.friendId._id,message:message}
     socketRef.current.emit("message",msgToSend)
     setMessage("")
+    api.post('/send-notification',{toSend:selectedChat.friendId._id,message,userId})
+    .then(res=>{
+
+    })
+    .catch(err=>console.log(err))
 }
 function handleFriendsClick(ele){
     setSelectedChat(ele)

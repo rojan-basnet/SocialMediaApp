@@ -1,16 +1,47 @@
 import {MessageCircle,UserRoundPen,BellRing,Gamepad2,House,Users,UserPlus,Menu,X} from 'lucide-react'
 import { Link,useParams } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ProfileC from './ProfileC'
+import api from '../../api/axios.js'
 import './NavBar.css'
 import { useGlobalState } from '../../globalStates/tabs.jsx'
 
 const NavBar = () => {
 const [isProfileIconClicked,setIsProfileIconClicked]=useState(false)
 const [showMobileSideBar,setShowMobileSideBar]=useState(false)
+const [showNotifiBox,setShowNotifiBox]=useState(false)
 const {userId}=useParams()
 const {selectedTab,setSelectedTab}=useGlobalState()
 
+useEffect(()=>{
+if ('serviceWorker' in navigator && 'PushManager' in window) {
+    navigator.serviceWorker.register('/sw.js')
+    .then(swReg => {
+        console.log('Service Worker Registered', swReg);
+    }).catch(err => console.error(err));
+}
+},[])
+
+async function handleNotifiSubs(){
+
+  const permission = await Notification.requestPermission();
+    if (permission !== 'granted') return alert('Permission denied');
+
+    const registration = await navigator.serviceWorker.ready;
+    const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: import.meta.env.VITE_NOTI_PUBLIC_KEYS
+    });
+
+    api.post('/subscribe',{subscription,userId})
+    .then((res)=>{
+      console.log(res.data)
+    })
+    .catch((err)=>{
+      console.error(err)
+    })
+
+}
   return (
     <>
     <div className='navBar'>
@@ -45,7 +76,7 @@ const {selectedTab,setSelectedTab}=useGlobalState()
 
           <ul className='end'>
             <li className={selectedTab =='notifications'?'active':""}>
-              <Link onClick={()=>setSelectedTab('notifications')}>
+              <Link onClick={()=>{setSelectedTab('notifications');handleNotifiSubs}}>
                 <BellRing  />
               </Link>
             </li> 
@@ -107,6 +138,11 @@ const {selectedTab,setSelectedTab}=useGlobalState()
                   </li>
                 </ul>
               </div>
+            </div>
+          }
+          {
+            showNotifiBox && <div>
+              <button >Allow noti</button>
             </div>
           }
     </div>
