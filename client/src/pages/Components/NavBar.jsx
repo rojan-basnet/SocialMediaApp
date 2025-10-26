@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import ProfileC from './ProfileC'
 import api from '../../api/axios.js'
 import './NavBar.css'
+import {toast,Toaster} from 'sonner'
 import { useGlobalState } from '../../globalStates/tabs.jsx'
 
 const NavBar = () => {
@@ -25,8 +26,8 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
 async function handleNotifiSubs(){
 
   const permission = await Notification.requestPermission();
-    if (permission !== 'granted') return alert('Permission denied');
-
+    if (permission !== 'granted') return toast.warning("Notifications Are Disabled");
+    toast.success("Notifications Are Enabled")
     const registration = await navigator.serviceWorker.ready;
     const subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
@@ -45,6 +46,7 @@ async function handleNotifiSubs(){
   return (
     <>
     <div className='navBar'>
+      <Toaster richColors={true}/>
           <ul className='logo'>
             <h1 >
               <Link to={`/${userId}/dashboard/home`} onClick={()=>setSelectedTab('home')} >LOGO</Link>
@@ -76,7 +78,7 @@ async function handleNotifiSubs(){
 
           <ul className='end'>
             <li className={selectedTab =='notifications'?'active':""}>
-              <Link onClick={()=>{setSelectedTab('notifications');handleNotifiSubs}}>
+              <Link onClick={()=>{setSelectedTab('notifications');handleNotifiSubs()}}>
                 <BellRing  />
               </Link>
             </li> 
@@ -123,7 +125,7 @@ async function handleNotifiSubs(){
                     </Link>
                   </li>
                   <li >
-                    <Link onClick={()=>{setSelectedTab('notifications')}}>
+                    <Link onClick={()=>{setSelectedTab('notifications');handleNotifiSubs()}}>
                       <BellRing  /> <div>Notifications</div>
                     </Link>
                   </li> 

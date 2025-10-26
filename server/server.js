@@ -367,7 +367,7 @@ app.post('/subscribe',async (req,res)=>{
     try{
         const newNotiSub=new  NotifiSub({subsId:userId,subscription})
         await newNotiSub.save()
-        res.status(200).json({message:"notifications allowed"})
+        res.status(200).json({message:"Subscribed to Notifications"})
     }catch(err){
         res.status(500)
     }
@@ -383,6 +383,7 @@ app.post('/send-notification', async (req, res) => {
         const notiSender= await User.findById(userId,{_id:0,profilePic:1,name:1})
 
         if(subscriber && notiSender){
+            console.log("neters")
             const payload = JSON.stringify({title: notiSender.name,body: message,icon:notiSender.profilePic|| `${process.env.FRONTEND}/default_pp.jpg`});
             await webpush.sendNotification(subscriber.subscription, payload)
             res.status(200).json({message:"message sent",payload})
