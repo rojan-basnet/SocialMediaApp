@@ -46,8 +46,8 @@ function handleUserAuth(e){
     <Toaster richColors={true}/>
     <div className='homeSignInForm'>
         <form onSubmit={handleUserAuth}>
-            <input type="text" placeholder='Username' value={user.userName} onChange={e=>setUser({...user,userName:e.target.value})}/>
-            <input type="email"  placeholder='User1@gmail.com' value={user.email} onChange={e=>setUser({...user,email:e.target.value})} autoComplete="email"/>
+            <input type="text" placeholder='Username' value={user.userName} onChange={e=>setUser({...user,userName:e.target.value})} name="name"/>
+            <input type="email"  placeholder='User1@gmail.com' value={user.email} onChange={e=>setUser({...user,email:e.target.value})} name="email" />
             <div className='pswdEnterSigin'>
             <input type={showPSWD? "text":"password"} placeholder='password' value={user.password} onChange={e=>setUser({...user,password:e.target.value})}/>
             {

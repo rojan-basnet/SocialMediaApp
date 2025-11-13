@@ -33,7 +33,7 @@ const HomePage = () => {
 
   function handlePostsFetch(){
     api.get('/fetchPosts')
-    .then(res=>{setPosts(res.data.posts)})
+    .then(res=>{setPosts([...res.data.posts].reverse())})
     .catch(err=>console.log(err))
 
   }
@@ -171,7 +171,7 @@ const HomePage = () => {
               return(
                 <div key={ele._id} className="singlePost">
                   <div className="postHeader">  
-                    <div><img src={ele.uploaderId.profilePic ? ele.uploaderId.profilePic : "/default_pp.jpg"} className="ppOfFriends"/>  <div>{ele.uploaderName}</div></div>
+                    <div><img src={ele.uploaderId.profilePic ? ele.uploaderId.profilePic : "/default_pp.jpg"} className="ppOfFriends" onClick={()=>{setIsCommenting(false);navigate(`/${userId}/dashboard/${ele.uploaderId._id}`)}}/>  <div>{ele.uploaderName}</div></div>
                     <div className="postTime"><div>{new Date(ele.postedAt).toDateString()}</div><div>{new Date(ele.postedAt).toLocaleTimeString("en-GB",{  hour: "2-digit",minute: "2-digit"})}</div></div>
                   </div>
                     <div className="postTitle">{ele.title}</div>
@@ -212,9 +212,12 @@ const HomePage = () => {
                 <div className="postHeader">  
                   <div className="postTop">
                     <div>{thisPostOfCmt.uploaderName}</div>
+                    <div className="postTime">
+                      <div>{new Date(thisPostOfCmt.postedAt).toDateString()}</div>
+                      <div>{new Date(thisPostOfCmt.postedAt).toLocaleTimeString("en-GB",{  hour: "2-digit",minute: "2-digit"})}</div>
+                    </div>
                     <div onClick={handleExitComment} className="exitCmt"><X/></div>
                   </div>
-                  <div className="postTime">{new Date(thisPostOfCmt.postedAt).toLocaleTimeString("en-GB",{  hour: "2-digit",minute: "2-digit"})}</div>
                   
                 </div>
                   <div className="postContent">
@@ -236,11 +239,16 @@ const HomePage = () => {
                       { comments.length!==0 && 
                         comments.map((ele)=>{
                           return <div key={ele._id} className="eachCmts">
-                            <div className="commenters" >
-                              {ele.commenterId.name}
+                            <div className="cmtpp">
+                              <img src={ele.commenterId.profilePic} onClick={()=>{setIsCommenting(false);navigate(`/${userId}/dashboard/${ele.commenterId._id}`)}}/>
                             </div>
-                            <div className="commenterCmts">
-                              {ele.comment}
+                            <div className="eachCmtCmt">
+                              <div className="commenters" >
+                                {ele.commenterId.name}
+                              </div>
+                              <div className="commenterCmts">
+                                {ele.comment}
+                              </div>
                             </div>
                           </div>
                         })

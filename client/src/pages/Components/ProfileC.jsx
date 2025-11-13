@@ -14,7 +14,7 @@ const newToast=toast.loading("Logging out")
   api.delete('/deleteToken')
   .then(res=>{
     toast.success("Logged Out",{id:newToast})
-    navigate("/",{replace:true})
+    navigate("/",{replace:true}) 
     })
   .catch(err=>{
     console.error(err)

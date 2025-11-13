@@ -191,7 +191,10 @@ const Profile = () => {
                 <div key={ele._id} className="singlePost">
                   <div className="postHeader">  
                     <div>{ele.uploaderName}</div>
-                    <div className="postTime">{new Date(ele.postedAt).toLocaleTimeString("en-GB",{  hour: "2-digit",minute: "2-digit"})}</div>
+                    <div className="postTime">
+                      <div>{new Date(ele.postedAt).toDateString()}</div>
+                      <div>{new Date(ele.postedAt).toLocaleTimeString("en-GB",{  hour: "2-digit",minute: "2-digit"})}</div>
+                    </div>
                   </div>
                     <div className="postTitle">{ele.title}</div>
                     {
@@ -231,10 +234,13 @@ const Profile = () => {
                 <div className="postHeader">  
                   <div className="postTop">
                     <div>{thisPostOfCmt.uploaderName}</div>
+                    <div className="postTime">
+                      <div>{new Date(thisPostOfCmt.postedAt).toDateString()}</div>
+                      <div>{new Date(thisPostOfCmt.postedAt).toLocaleTimeString("en-GB",{  hour: "2-digit",minute: "2-digit"})}</div>
+                    </div>
                     <div onClick={handleExitComment} className="exitCmt"><X/></div>
                   </div>
-                  <div className="postTime">{new Date(thisPostOfCmt.postedAt).toLocaleTimeString("en-GB",{  hour: "2-digit",minute: "2-digit"})}</div>
-                  
+
                 </div>
                   <div className="postContent">
                     <div className="postTitle">{thisPostOfCmt.title}</div>
@@ -255,11 +261,16 @@ const Profile = () => {
                       { comments.length!==0 && 
                         comments.map((ele)=>{
                           return <div key={ele._id} className="eachCmts">
-                            <div className="commenters" >
-                              {ele.commenterId.name}
+                            <div className="cmtpp">
+                              <img src={ele.commenterId.profilePic} onClick={()=>{setIsCommenting(false);navigate(`/${userId}/dashboard/${ele.commenterId._id}`)}}/>
                             </div>
-                            <div className="commenterCmts">
-                              {ele.comment}
+                            <div className="eachCmtCmt">
+                              <div className="commenters" >
+                                {ele.commenterId.name}
+                              </div>
+                              <div className="commenterCmts">
+                                {ele.comment}
+                              </div>
                             </div>
                           </div>
                         })

@@ -155,18 +155,26 @@
 .commentBox .postTop{
     display: flex;
     justify-content: space-between;
+    width: 100%;
+
+}
+.postTop .postTime{
+    flex-direction: row;
+    gap: 10px;
 }
 .commentBox .postHeader .exitCmt{
-    color: grey;
+    color: hsl(0, 0%, 47%);
+    transition: all .3s ease;
 }
-.exitCmt:hover{
+.commentBox .postHeader .exitCmt:hover{
     cursor: pointer;
+    color: black;
 }
 .commentBox .postContent{
     height: 80%;
     overflow-y: auto;
 }
-.commentBox .singlePost .youCmt{
+.commentBox .singlePost .youCmt{ 
     background-color: rgb(220, 220, 220);
     border-radius: 5px;
     padding: 3px;
@@ -203,6 +211,7 @@
     text-align: center;
     font-size: 1rem;
     color: rgb(4, 4, 4);
+    padding: 10px 0;
 }
 .allcomments{
     display: flex;
@@ -211,11 +220,29 @@
     padding: 10px 0;
 }
 .allcomments .eachCmts{
-    background-color: rgba(62, 70, 75, 0.112);
     border-radius: 10px;
     padding: 10px;
     overflow-wrap: break-word;
+    display: flex;
+    gap: 10px;
 }
+.eachCmts .cmtpp img{
+    border-radius: 50%;
+    height: 64px;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+.eachCmts .cmtpp img:hover{
+    scale: 1.05;
+    translate: 0 -5px;
+    box-shadow: 2px 2px 5px rgb(169, 169, 169);
+}
+.eachCmts .eachCmtCmt {
+    background-color: hsl(0, 0%, 93%);
+    border-radius: 10px;
+    padding: 10px;
+}
+
 .eachCmts .commenters{
     font-weight: bold;
 }

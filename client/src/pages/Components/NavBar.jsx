@@ -111,7 +111,7 @@ async function handleNotifiSubs(){
                   </li>
                   <li className={selectedTab =='addFrnds'?'active':""}>
                     <Link to={`/${userId}/dashboard/addFriends`} onClick={()=>{setSelectedTab('addFrnds')}} >
-                      <UserPlus/> <div>More People</div>
+                      <UserPlus/> <div>Suggestions</div>
                     </Link>
                   </li>
                   <li className={selectedTab =='game'?'active':""}>

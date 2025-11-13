@@ -104,6 +104,10 @@ app.post('/Login',async (req,res)=>{
             const isMatch=await bcrypt.compare(password,thisUser.password)
             if(isMatch){
                 const {generateAccessToken,generateRefreshToken}=generateTokens(thisUser._id,userName)
+
+                const newR_Token=new RefreshTokenM({rToken:generateRefreshToken})
+                await newR_Token.save()
+
                 res.cookie("refreshToken",generateRefreshToken,{
                     httpOnly:true,
                     secure:false,
@@ -236,7 +240,7 @@ app.post('/uploadPost',jwtVerfiy,async(req,res)=>{
     }
 })
 
-app.get('/fetchPosts',jwtVerfiy,async (req,res)=>{
+app.get('/fetchPosts',jwtVerfiy,async (req,res)=>{ 
     const {id}=req.user
     try{
         const posts=await Post.find({ uploaderId: { $ne: id } }).populate("uploaderId","profilePic")
@@ -283,7 +287,7 @@ app.post('/postComment',jwtVerfiy,async (req,res)=>{
 app.post('/getComments',jwtVerfiy,async (req,res)=>{
     const {postid}=req.body
     try{
-        const post=await Post.findById(postid,{_id:0,comments:1}).populate("comments.commenterId","name")
+        const post=await Post.findById(postid,{_id:0,comments:1}).populate("comments.commenterId","name profilePic _id")
         res.status(200).json({post})
     }catch(err){
         res.status(500)
@@ -349,7 +353,7 @@ app.post('/getOhterUserPost',jwtVerfiy,async (req,res)=>{
         res.status(500)
     }
 })
-app.post('/changeUserInfo' ,async (req,res)=>{
+app.post('/changeUserInfo' ,jwtVerfiy,async (req,res)=>{
     const {userId,newUserInfo}=req.body
     const {name,bio,profession,hobbies}=newUserInfo
     try{
@@ -360,7 +364,7 @@ app.post('/changeUserInfo' ,async (req,res)=>{
         res.status(500) 
     }
 })
-app.post('/subscribe',async (req,res)=>{
+app.post('/subscribe',jwtVerfiy,async (req,res)=>{
     const {subscription,userId}=req.body
 
     if(subscription && userId){

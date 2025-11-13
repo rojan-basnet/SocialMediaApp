@@ -79,7 +79,7 @@ const NewPost = () => {
   function handleCancelAddingPost(){
     setAddingPost(false)
     setFile(null)
-    setPost({title:"",images:[]})
+    setPost({title:"",images:[],video:""})
     setImgObjURl([])
   }
   function handleFileChange(e){
