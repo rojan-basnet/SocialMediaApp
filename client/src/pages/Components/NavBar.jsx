@@ -17,9 +17,7 @@ const {selectedTab,setSelectedTab}=useGlobalState()
 useEffect(()=>{
 if ('serviceWorker' in navigator && 'PushManager' in window) {
     navigator.serviceWorker.register('/sw.js')
-    .then(swReg => {
-        console.log('Service Worker Registered', swReg);
-    }).catch(err => console.error(err));
+    .then(swReg => {}).catch(err => console.error(err));
 }
 },[])
 

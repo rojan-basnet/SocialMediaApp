@@ -36,7 +36,7 @@ webpush.setVapidDetails(
 
 
 function generateTokens(id,userName){
-    const generateAccessToken=jwt.sign({id, username:userName },process.env.JWT_A_SECRET,{expiresIn:"15m"})
+    const generateAccessToken=jwt.sign({id, username:userName },process.env.JWT_A_SECRET,{expiresIn:"10m"})
     const generateRefreshToken=jwt.sign({id, username: userName },process.env.JWT_R_SECRET,{expiresIn:"7d"})
     return {generateAccessToken,generateRefreshToken}
 }
@@ -125,6 +125,30 @@ app.post('/Login',async (req,res)=>{
         console.log("there is no such user")
     }
 })
+
+app.post('/refreshToken',async (req,res)=>{
+    const refreshToken=req.cookies.refreshToken
+
+    if(!refreshToken){
+        return res.status(401).json({message:"noRefreshToken"})
+    } 
+    try{
+        const tokenFromDb=await RefreshTokenM.findOne({rToken:refreshToken})
+        const decoded=jwt.verify(refreshToken,process.env.JWT_R_SECRET)
+        const {id,username}=decoded
+        if(tokenFromDb.rToken==refreshToken){
+            const newToken=jwt.sign({id,username},process.env.JWT_A_SECRET,{expiresIn:'10m'})
+            return res.status(200).json({success:true,message:"new token generated",newToken})
+        }
+        res.status(404).json({message:"tokenNotFound"})
+
+    }catch(err){
+        res.status(403).json({message:"invalidOrExpiredRefreshToken"})
+    }
+
+
+})
+
 app.post('/allUsers',jwtVerfiy, async (req,res)=>{
     const id=req.body.userId
     
@@ -197,24 +221,7 @@ app.post('/getMsgFrnds' ,jwtVerfiy, async (req,res)=>{
     }
 })
 
-app.post('/refreshToken',(req,res)=>{
-    const refreshToken=req.cookies.refreshToken
 
-    if(!refreshToken){
-        return res.status(401).json({message:"noRefreshToken"})
-    } 
-    try{
-        const decoded=jwt.verify(refreshToken,process.env.JWT_R_SECRET)
-        const {id,username}=decoded
-
-        const newToken=jwt.sign({id,username},process.env.JWT_A_SECRET,{expiresIn:'15m'})
-        res.status(200).json({success:true,message:"new token generated",newToken})
-    }catch(err){
-        res.status(403).json({message:"invalidOrExpiredRefreshToken"})
-    }
-
-
-})
 app.post('/getMessages',jwtVerfiy, async (req,res)=>{
     const {userId,friendId}=req.body
 

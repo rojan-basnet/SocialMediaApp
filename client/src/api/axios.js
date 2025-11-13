@@ -23,6 +23,7 @@ api.interceptors.response.use(res=>res,
                 return api(originalRequest)
             }
             catch(err){
+                window.location.href = "/";
                 return Promise.reject({
                     message:"invalidOrExpiredRefreshToken",
                     originalError:err
