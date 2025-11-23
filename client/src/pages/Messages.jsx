@@ -13,7 +13,7 @@ const {userId}=useParams()
 const [friends,setFriends]=useState([])
 const [selectedChat,setSelectedChat]=useState('')
 const [message,setMessage]=useState("")
-const [allMessages,setAllMessages]=useState([])
+const [allMessages,setAllMessages]=useState([]) 
 const [isTyping,setIsTyping]=useState(false)
 const socketRef=useRef()
 const [showMobileSideBar,setShowMobileSideBar]=useState(false)
@@ -33,10 +33,13 @@ useEffect(() => {
 function handleFriendsFetch(){
     api.post('/getMsgFrnds',{userId})
     .then(res=>{
-            setFriends(res.data.trueFrnds)
-            setSelectedChat(res.data.trueFrnds[0])
-            handleFriendsClick(res.data.trueFrnds[0])
-            socketRef.current.emit('joinRoom',{userId,friendId:res.data.trueFrnds[0].friendId._id})
+            const frndsArr=res.data.trueFrnds.filter((ele)=>{
+                return ele.friendId!==null
+            })
+            setFriends(frndsArr)
+            setSelectedChat(frndsArr[0])
+            handleFriendsClick(frndsArr[0])
+            socketRef.current.emit('joinRoom',{userId,friendId:frndsArr[0]?.friendId._id})
     })
     .catch(err=>{
         console.error(err)
@@ -72,7 +75,7 @@ function handleFriendsClick(ele){
     socketRef.current.emit("typingStop")
     socketRef.current.emit('joinRoom',{userId,friendId:ele.friendId._id})
 
-    api.post('/getMessages',{userId,friendId:ele.friendId._id})
+    api.get(`/getMessages?userId=${userId}&friendId=${ele.friendId._id}`)
     .then(res=>{
         setAllMessages(res.data.allmessages)
     })
@@ -97,7 +100,12 @@ function handleMessageTyping(typingText){
                 <ul>
                 { friends.length!==0  &&
                     friends.map((ele,index)=>{
-                        return <li key={index} className={selectedChat?.friendId._id==ele.friendId._id?"active":""} onClick={()=>handleFriendsClick(ele)}><img src={ele.friendId.profilePic?ele.friendId.profilePic:"/default_pp.jpg"}/><div>{ele.frndName}</div></li>
+                        return <li key={index} 
+                                    className={selectedChat?.friendId?._id==ele.friendId._id?"active":""} 
+                                    onClick={()=>handleFriendsClick(ele)}>
+                                        <img src={ele.friendId?.profilePic?ele.friendId.profilePic:"/default_pp.jpg"}/>
+                                        <div>{ele.frndName}</div>
+                                </li>
                     })
                 }{ 
                     friends.length==0 &&

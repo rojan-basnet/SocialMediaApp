@@ -1,20 +1,18 @@
-import express, { Router } from 'express'
+import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
-import bcrypt from 'bcrypt'
 import { connectDb } from './config/db.js'
 import { Server } from 'socket.io'
-import jwt from 'jsonwebtoken'
 import { User } from './models/User.js'
-import {NotifiSub} from './models/NotifiSubscribe.js'
-import webpush from 'web-push';
 import cookieParser from 'cookie-parser'
 import jwtVerfiy from './middleware/verifyJWT.js'
 import Message from './models/Message.js'
 import path from 'path'
 import { Post } from './models/Posts.js'
-import { RefreshTokenM } from './models/RefreshToken.js'
-
+import authRouter from './routes/auth.route.js'
+import reqRouter from './routes/frndReqRoute.js'
+import notifiRouter from './routes/notification.route.js'
+import messageRouter from './routes/messages.route.js'
 
 const __dirname=path.resolve()
 dotenv.config();
@@ -28,126 +26,13 @@ app.use(cors({
 app.use(cookieParser())
 app.use(express.json())
 
-webpush.setVapidDetails(
-  'mailto:you@example.com',
-  process.env.NOTI_PUBLIC_KEYS,
-  process.env.NOTI_PRIVATE_KEYS
-);
 
 
-function generateTokens(id,userName){
-    const generateAccessToken=jwt.sign({id, username:userName },process.env.JWT_A_SECRET,{expiresIn:"10m"})
-    const generateRefreshToken=jwt.sign({id, username: userName },process.env.JWT_R_SECRET,{expiresIn:"7d"})
-    return {generateAccessToken,generateRefreshToken}
-}
-app.post('/sendFrndReq',async  (req,res)=>{
-    const {userId,frnId,name}=req.body
 
-    try{
-        const sender=await User.findByIdAndUpdate(userId,{$push:{friends:{friendId: frnId, status: "pending",requestType:"sent",frndName:name}}},{new:true})
-        const receiver=await User.findByIdAndUpdate(frnId,{$push:{friends:{friendId: userId, status: "pending",requestType:"received",frndName:sender.name}}},{new:true})
-
-        res.status(200).json({message:"request sent",to:receiver.name})
-    }catch(err){
-        console.error(err);
-        res.status(500).json({ success: false, message: "Server error" });
-    }
-})
-
-app.delete('/deleteToken',async (req,res)=>{ 
-    const {refreshToken}=req.cookies
-
-    try{
-        const delToken=await RefreshTokenM.findOneAndDelete({rToken:refreshToken})
-        if(delToken==null) return res.status(404).json({success:false})
-        res.status(200).json({success:true})
-    }catch(err){
-        res.status(500).json({success:false})
-    }
-})
-
-app.post('/SignUp', async (req,res)=>{
-    const data=req.body
-    if(data.email && data.password && data.userName){
-        const hashed=await bcrypt.hash(data.password,10)
-        const newUser={name:data.userName,email:data.email,password:hashed}
-        try{
-            const createdUser=await User.create(newUser)
-            const {generateAccessToken,generateRefreshToken}=generateTokens(createdUser._id,createdUser.name)
-
-            const newR_Token=new RefreshTokenM({rToken:generateRefreshToken})
-            await newR_Token.save()
-            res.cookie("refreshToken",generateRefreshToken,{
-                httpOnly: true,
-                secure: false, 
-                sameSite: "lax",
-                maxAge: 7 * 24 * 60 * 60 * 1000,
-            })
-
-            res.status(201).json({success:true,message:"user created",userObjId:createdUser._id,generateAccessToken})
-        }catch(error){
-            console.error("error while create user",error);
-            res.status(500).json({success:false,message:"Failed to create new user"})
-        }
-    }
-    else{
-        res.status(400).json({success:false,message:"empty fields"})
-    }
-})
-app.post('/Login',async (req,res)=>{
-    const {userName,password,email}=req.body
-
-    try{
-        const thisUser=await User.findOne({email:email})
-
-        if(userName===thisUser.name){
-            const isMatch=await bcrypt.compare(password,thisUser.password)
-            if(isMatch){
-                const {generateAccessToken,generateRefreshToken}=generateTokens(thisUser._id,userName)
-
-                const newR_Token=new RefreshTokenM({rToken:generateRefreshToken})
-                await newR_Token.save()
-
-                res.cookie("refreshToken",generateRefreshToken,{
-                    httpOnly:true,
-                    secure:false,
-                    sameSite:"lax",
-                    maxAge:7 * 24 * 60 * 60 * 1000,
-                })
-                return res.status(200).json({message:"user loged in",userObjId:thisUser._id,generateAccessToken})
-            } 
-            return res.status(403).json({message:"incorrectPassword"})
-        }else{
-            res.status(403).json({message:"invalid fields"})
-        }
-    }catch(err){
-        res.status(404).json({message:"user not found"})
-        console.log("there is no such user")
-    }
-})
-
-app.post('/refreshToken',async (req,res)=>{
-    const refreshToken=req.cookies.refreshToken
-
-    if(!refreshToken){
-        return res.status(401).json({message:"noRefreshToken"})
-    } 
-    try{
-        const tokenFromDb=await RefreshTokenM.findOne({rToken:refreshToken})
-        const decoded=jwt.verify(refreshToken,process.env.JWT_R_SECRET)
-        const {id,username}=decoded
-        if(tokenFromDb.rToken==refreshToken){
-            const newToken=jwt.sign({id,username},process.env.JWT_A_SECRET,{expiresIn:'10m'})
-            return res.status(200).json({success:true,message:"new token generated",newToken})
-        }
-        res.status(404).json({message:"tokenNotFound"})
-
-    }catch(err){
-        res.status(403).json({message:"invalidOrExpiredRefreshToken"})
-    }
-
-
-})
+app.use('/',authRouter)
+app.use('/',reqRouter)
+app.use('/',notifiRouter)
+app.use('/',messageRouter)
 
 app.post('/allUsers',jwtVerfiy, async (req,res)=>{
     const id=req.body.userId
@@ -180,66 +65,19 @@ app.post('/friends',jwtVerfiy, async (req,res)=>{
         res.status(500).json({message:"server error",data:"while fetching friends"})
     }
 })
-app.post('/acceptReq',jwtVerfiy,async (req,res)=>{
-    const {userId,friendId}=req.body
-
-    try{
-        const receiverAccept=await User.updateOne(
-            {_id:userId,"friends.friendId":friendId},
-            {$set:{ "friends.$.status": "accepted" }})
-
-        const senderAccept=await User.updateOne(
-            {_id:friendId,"friends.friendId":userId},
-            {$set:{"friends.$.status":"accepted"}}
-        )
-
-        res.send(200).json({message:"Request Accepted"})
-
-    }catch(err){
-        res.status(500).json({message:"server error"})
-    }
-})
-app.delete('/deleteReq',jwtVerfiy,async (req,res)=>{
-    const {userId,friendId}=req.body
-    try{
-        const receiverDel=await User.updateOne({_id:userId},{$pull:{friends:{friendId:friendId}}})
-        const senderDel=await User.updateOne({_id:friendId},{$pull:{friends:{friendId:userId}}})
-
-        res.status(200).json({message:"Canceled Request"})
-    }catch(err){
-        res.status(500).json({message:"server error"})
-    }
-})
-app.post('/getMsgFrnds' ,jwtVerfiy, async (req,res)=>{
-    const {userId}=req.body
-    try{
-        const userFrnds=await User.findById(userId,{_id:0,friends:1}).populate("friends.friendId","profilePic")
-        const trueFrnds=userFrnds.friends.filter(f=>f.status==='accepted')
-        res.status(200).json({trueFrnds,message:"fetched friends"})
-    }catch(err){
-        res.status(500)
-    }
-})
 
 
-app.post('/getMessages',jwtVerfiy, async (req,res)=>{
-    const {userId,friendId}=req.body
 
-    try{
-        const allmessages=await Message.find({$or:[{sender_id:userId,receiver_id:friendId},{sender_id:friendId,receiver_id:userId}]})
-        res.status(200).json({message:"fetched message",allmessages})
-    }catch(err){
-        res.status(500)
-    }
-})
+
+
 app.post('/uploadPost',jwtVerfiy,async(req,res)=>{
     const {id,username}=req.user
-    const {title,images}=req.body.newPost
+    const {title,video,images}=req.body.newPost
+    console.log(req.body)
 
     try{
-        const newPost=new Post({uploaderName:username,uploaderId:id,title:title,images:images})
+        const newPost=new Post({uploaderName:username,uploaderId:id,title:title,images:images,video:video})
         const post=await newPost.save()
-        console.log(post)
         res.status(200).json({message:"Posted",post})
     }catch(err){
         console.log(err)
@@ -250,7 +88,7 @@ app.post('/uploadPost',jwtVerfiy,async(req,res)=>{
 app.get('/fetchPosts',jwtVerfiy,async (req,res)=>{ 
     const {id}=req.user
     try{
-        const posts=await Post.find({ uploaderId: { $ne: id } }).populate("uploaderId","profilePic")
+        const posts=await Post.find().populate("uploaderId","profilePic")
         res.status(200).json({posts})
     }catch(err){
         res.status(500)
@@ -300,8 +138,8 @@ app.post('/getComments',jwtVerfiy,async (req,res)=>{
         res.status(500)
     }
 })
-app.post('/getUserData',jwtVerfiy,async (req,res)=>{
-    const {userId}=req.body
+app.get('/getUserData',jwtVerfiy,async (req,res)=>{
+    const {userId}=req.query
     try{
         const user=await User.findById(userId)
         res.status(200).json({user})
@@ -311,24 +149,24 @@ app.post('/getUserData',jwtVerfiy,async (req,res)=>{
     }
 })
 app.post('/getUserPost',jwtVerfiy,async (req,res)=>{
-    const {userId}=req.body
+    const {postFrom}=req.body
     try{
-        const posts=await Post.find({uploaderId:userId}).sort({_id:-1})
+        const posts=await Post.find({uploaderId:postFrom}).sort({_id:-1})
         res.status(200).json({posts})
     }catch(err){
         console.log(err)
         res.status(500)
     }
 })
+
 app.post('/profilePicSetUp',jwtVerfiy,async (req,res)=>{
     const {userId,ppURL}=req.body
 
     try{
         const updatedUser=await User.findByIdAndUpdate(userId,{profilePic:ppURL},{new:true})
-        console.log("yo you")
-        console.log(updatedUser)
         res.status(200).json({updatedUser})
     }catch(err){
+        console.log(err)
         res.status(500)
     }
 })
@@ -351,15 +189,7 @@ app.post('/getOtherUserData',jwtVerfiy,async (req,res)=>{
         res.status(500)
     }
 })
-app.post('/getOhterUserPost',jwtVerfiy,async (req,res)=>{
-    const {otherId}=req.body
-    try{
-        const otherUserPosts=await Post.find({uploaderId:otherId})
-        res.status(200).json({otherUserPosts:otherUserPosts})
-    }catch(err){
-        res.status(500)
-    }
-})
+
 app.post('/changeUserInfo' ,jwtVerfiy,async (req,res)=>{
     const {userId,newUserInfo}=req.body
     const {name,bio,profession,hobbies}=newUserInfo
@@ -371,44 +201,7 @@ app.post('/changeUserInfo' ,jwtVerfiy,async (req,res)=>{
         res.status(500) 
     }
 })
-app.post('/subscribe',jwtVerfiy,async (req,res)=>{
-    const {subscription,userId}=req.body
 
-    if(subscription && userId){
-    try{
-        const newNotiSub=new  NotifiSub({subsId:userId,subscription})
-        await newNotiSub.save()
-        res.status(200).json({message:"Subscribed to Notifications"})
-    }catch(err){
-        res.status(500)
-    }
-    }
-    return res.status(400)
-
-})
-
-app.post('/send-notification', async (req, res) => {
-    const {toSend,message,userId}=req.body
-    try{
-        const subscriber= await NotifiSub.findOne({subsId:toSend})
-        const notiSender= await User.findById(userId,{_id:0,profilePic:1,name:1})
-
-        if(subscriber && notiSender){
-            console.log("neters")
-            const payload = JSON.stringify({title: notiSender.name,body: message,icon:notiSender.profilePic|| `${process.env.FRONTEND}/default_pp.jpg`});
-            await webpush.sendNotification(subscriber.subscription, payload)
-            res.status(200).json({message:"message sent",payload})
-
-        }else{
-            res.status(200).json({data:"not subscribed"})
-        }
-
-    }catch(err){
-        console.log(err)
-        res.status(500).json({message:"server error"})
-    }
-
-});
 
 if(process.env.NODE_ENV=="production"){
     const frontendPath = path.join(__dirname, 'client', 'dist');

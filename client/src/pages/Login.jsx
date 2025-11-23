@@ -49,7 +49,7 @@ function handleUserAuth(e){
             <input type="text" placeholder='Username' value={user.userName} onChange={e=>setUser({...user,userName:e.target.value})} name="name"/>
             <input type="email"  placeholder='User1@gmail.com' value={user.email} onChange={e=>setUser({...user,email:e.target.value})} name="email" />
             <div className='pswdEnterSigin'>
-            <input type={showPSWD? "text":"password"} placeholder='password' value={user.password} onChange={e=>setUser({...user,password:e.target.value})}/>
+            <input type={showPSWD? "text":"password"} placeholder='password' value={user.password} onChange={e=>setUser({...user,password:e.target.value})} />
             {
               showPSWD && <Eye onClick={()=>setshowPSWD(false)}/>
             }

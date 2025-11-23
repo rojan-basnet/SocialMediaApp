@@ -1,5 +1,6 @@
 
 import mongoose from "mongoose";
+import { type } from "os";
 const reactsSchema=new mongoose.Schema({
     reacterId:{type:mongoose.Schema.Types.ObjectId,ref:'User',required: true},
     reactEmoji:{type:String,enum:["👍", "❤️", "😂", "😢", "😡", "🔥"],default:"👍"},
@@ -13,6 +14,7 @@ const postSchema=new mongoose.Schema({
     uploaderId:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"User" },
     title:{type:String},
     images:[{type:String}],
+    video:[{type:String}],
     postedAt:{type:Date,default:()=>new Date()},
     reacts:[reactsSchema],
     comments:[commentSchema]

@@ -103,7 +103,7 @@ const newToast=toast.loading("Deleting Request")
                       return <div key={index} > 
 
                             <div className="frndProfile">
-                              <img src={ele.friendId.profilePic? ele.friendId.profilePic:"/default_pp.jpg" }  
+                              <img src={ele.friendId?.profilePic? ele.friendId.profilePic:"/default_pp.jpg" }  
                               onClick={()=>{navigate(`/${userId}/dashboard/${ele.friendId._id}`)}}/>
                               <div>{ele.frndName}</div>
                             </div>

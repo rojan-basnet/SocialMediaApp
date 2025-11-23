@@ -5,7 +5,7 @@ import api from "../api/axios.js";
 import NavBar from "./Components/NavBar.jsx";
 import NewPost from "./Components/NewPost.jsx";
 import './HomePage.css'
-import { ThumbsUp,MessageSquareMore,Forward, SendHorizonal,X ,Smile} from "lucide-react";
+import { ThumbsUp,MessageSquareMore,Forward, SendHorizonal,X ,Smile, Divide} from "lucide-react";
 
 
 
@@ -38,7 +38,7 @@ const HomePage = () => {
 
   }
   function getUserData(){
-    api.post('/getUserData',{userId})
+    api.get(`/getUserData?userId=${userId}`)
     .then(res=>{setUser(res.data.user)})
     .catch(err=>console.error(err))
   }
@@ -71,7 +71,6 @@ const HomePage = () => {
 
     if(comment.trim()!=="" && postID!==""){
       const newCmt={commenterId:{name:user.name,_id:userId},comment:comment,_id:postID}
-      console.log(newCmt)
     api.post('/postComment',{userId,postID,comment})
     .then(res=>{setComments([...comments,newCmt]);setComment("")})
     .catch(err=>console.log(err))
@@ -182,6 +181,10 @@ const HomePage = () => {
                           ele.images&& ele.images.slice(0, 4).map((imgUrl,index)=><img src={imgUrl} key={index} onClick={()=>handleCommentClick(ele._id)}></img>)
                         }
                         <div className="showMore" onClick={()=>handleCommentClick(ele._id)}>more photos +{ele.images.length-4}</div>
+                      </div>
+                    }{
+                      ele.video?.length==1 && <div className="postImages">
+                        <video src={ele.video[0]} controls />
                       </div>
                     }
                     {

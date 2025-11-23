@@ -7,7 +7,7 @@ import './OtherProfile.css'
 import './Profile.css'
 
 
-const OtherProfile = () => {
+const OtherProfile = () => { 
     const {userId,otherId}=useParams()
     const [user,setUser]=useState({})
     const [posts,setPosts]=useState([])
@@ -34,8 +34,8 @@ const OtherProfile = () => {
         .catch(err=>{console.log(err)})
     }
     function getUserPosts(){
-        api.post("/getOhterUserPost",{otherId})
-        .then(res=>{setPosts(res.data.otherUserPosts)})
+        api.post("/getUserPost",{postFrom:otherId})
+        .then(res=>{setPosts(res.data.posts)})
         .catch(err=>{console.log(err)})
 
     }
@@ -203,6 +203,10 @@ const OtherProfile = () => {
                           ele.images&& ele.images.slice(0, 4).map((imgUrl,index)=><img src={imgUrl} key={index} onClick={()=>handleCommentClick(ele._id)}></img>)
                         }
                         <div className="showMore" onClick={()=>handleCommentClick(ele._id)}>more photos +{ele.images.length-4}</div>
+                      </div>
+                    }{
+                      ele.video?.length==1 && <div className="postImages">
+                        <video src={ele.video[0]} controls />
                       </div>
                     }
                     {

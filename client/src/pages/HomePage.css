@@ -250,6 +250,9 @@
     text-align: center;
     color: grey;
 }
+.postImages video{
+    width: 100%;
+}
 .postImages {
   display: grid;
   gap: 5px;
