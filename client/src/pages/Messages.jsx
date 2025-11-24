@@ -75,7 +75,7 @@ function handleFriendsClick(ele){
     socketRef.current.emit("typingStop")
     socketRef.current.emit('joinRoom',{userId,friendId:ele.friendId._id})
 
-    api.get(`/getMessages?userId=${userId}&friendId=${ele.friendId._id}`)
+    api.get(`/getMessages?friendId=${ele.friendId._id}`)
     .then(res=>{
         setAllMessages(res.data.allmessages)
     })

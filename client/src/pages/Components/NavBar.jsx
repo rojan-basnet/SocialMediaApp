@@ -15,6 +15,7 @@ const {userId}=useParams()
 const {selectedTab,setSelectedTab}=useGlobalState()
 
 useEffect(()=>{
+localStorage.setItem("userId",userId)
 if ('serviceWorker' in navigator && 'PushManager' in window) {
     navigator.serviceWorker.register('/sw.js')
     .then(swReg => {}).catch(err => console.error(err));

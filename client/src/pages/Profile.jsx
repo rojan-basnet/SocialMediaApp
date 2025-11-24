@@ -28,7 +28,7 @@ const Profile = () => {
   }, [comments])
 
     function getUserData(){
-    api.get(`/getUserData?userId=${userId}`)
+    api.get(`/getUserData`)
         .then(res=>{setUser(res.data.user);getNumFrnds(res.data.user.friends)})
         .catch(err=>{console.log(err)})
 

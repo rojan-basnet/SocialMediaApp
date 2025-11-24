@@ -24,7 +24,7 @@ const {userId}=useParams()
   },[])
 
   function getUserData(){
-    api.get(`/getUserData?userId=${userId}`)
+    api.get(`/getUserData`)
       .then(res=>{
         const data=res.data.user
         setUser(data);

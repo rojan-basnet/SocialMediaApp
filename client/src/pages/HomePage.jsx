@@ -38,7 +38,7 @@ const HomePage = () => {
 
   }
   function getUserData(){
-    api.get(`/getUserData?userId=${userId}`)
+    api.get(`/getUserData`)
     .then(res=>{setUser(res.data.user)})
     .catch(err=>console.error(err))
   }

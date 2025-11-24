@@ -1,12 +1,13 @@
 import axios from "axios";
-
 const api=axios.create({
     baseURL: import.meta.env.VITE_API_FETCH_URL,
     withCredentials: true,
 })
 api.interceptors.request.use(config=>{
+    const userId=localStorage.getItem("userId")
     const token =localStorage.getItem("AccessToken")
     if(token) config.headers.Authorization=`Bearer ${token}`
+    config.params={...config.params,userId}
     return config
 })
 
