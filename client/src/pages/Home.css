@@ -26,18 +26,17 @@
 }
 .homeSignInForm form button{
     border: none;
-    border-radius: 10px;
-    background-color: black;
+    background-color: hsl(208, 100%, 20%);
     color: white;
     padding: 10px;
     font-size: 1rem;
     transition: all .2s ease ;
+    width: 80%;
 }
 .homeSignInForm form button:hover{
     cursor: pointer;
-    transform: translateY(-3px);
-    transform: scale(1.02);
-    box-shadow:1px 1px 6px rgba(128, 128, 128, 0.548) ;
+    transform: translateY(-2px);
+    background-color: hsl(208, 100%, 30%);
 }
 .homeSignInForm form input:focus{
     outline: none; 
@@ -75,7 +74,201 @@
     .homeSignInForm form input{
         width: 100%;
     }
+    .homeSignInForm form button{
+        width: 100%;
+    }
     .homeSignInForm .pswdEnterSigin{
         width: 100%;
     }
+}
+
+
+
+/*for this page*/
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: #f5f7fb;
+  padding: 60px 20px;
+}
+
+.hero-container {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+  padding-top:40px ;
+}
+
+.hero-left h1 {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.hero-left h1 span {
+  color: #007bff;
+}
+
+.hero-left p {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: #555;
+  max-width: 500px;
+}
+
+.hero-buttons {
+  margin-top: 30px;
+  display: flex;
+  gap: 15px;
+}
+
+.primary-btn {
+  padding: 12px 28px;
+  background: #007bff;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.primary-btn:hover {
+  background: #005fcc;
+}
+
+.secondary-btn {
+  padding: 12px 28px;
+  background: white;
+  border: 2px solid #ddd;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.secondary-btn:hover {
+  background: #eee;
+}
+
+.hero-right img {
+  width: 350px;
+  max-width: 100%;
+  display: block;
+  margin: auto;
+  box-shadow: 3px 3px 10px rgb(220, 220, 220);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .hero-left h1 {
+    font-size: 2.8rem;
+  }
+
+  .hero-left p {
+    margin: 0 auto;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+}
+
+/* Navbar container */
+.navbarHome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  background-color: #ffffff; /* White background */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* subtle shadow */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Logo section */
+.logo {
+  height: 80px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.logo img{
+  aspect-ratio: 1/1;
+  height: 60px;
+}
+
+/* Section links (for scrolling or nav items) */
+.sectionlinks a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.sectionlinks a:hover {
+  color: #007bff;
+}
+
+/* Auth buttons container */
+.authbox {
+  display: flex;
+  gap: 10px;
+}
+
+/* Common button style */
+.authbox button {
+  padding: 8px 20px;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Sign up button */
+.authbox button:first-child {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.authbox button:first-child:hover {
+  background-color: #005fcc;
+}
+
+/* Log in button */
+.authbox button:last-child {
+  background-color: transparent;
+  border: 2px solid #007bff;
+  color: #007bff;
+}
+
+.authbox button:last-child:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Responsive navbar */
+@media (max-width: 768px) {
+  .navbarHome {
+    padding: 15px 20px;
+  }
+
+  .sectionlinks {
+    margin: 10px 0;
+  }
 }

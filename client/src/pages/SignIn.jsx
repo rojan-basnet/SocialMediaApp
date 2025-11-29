@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {Toaster,toast} from 'sonner'
 import {EyeOff,Eye} from 'lucide-react'
+import "./Login.css"
 import './Home.css'
 import {useState} from 'react'
 import {useNavigate,Link} from 'react-router-dom'
@@ -37,6 +38,8 @@ function handleUserAuth(e){
     <Toaster richColors={true}/>
     <div className='homeSignInForm'>
         <form onSubmit={handleUserAuth}>
+            <h3>Create new account</h3>
+
             <input type="text" placeholder='Username' value={user.userName} onChange={e=>setUser({...user,userName:e.target.value})} name="name"/>
             <input type="email"  placeholder='User1@gmail.com' value={user.email} onChange={e=>setUser({...user,email:e.target.value})} name="email"/>
             <div className='pswdEnterSigin'>
@@ -49,7 +52,9 @@ function handleUserAuth(e){
             }
             </div>
             <button type='submit'  >Create</button>
-            <div>Already have Account? <Link to={'/logIn'}>Log In</Link></div>
+            <br />
+            <Link to={'/logIn'} className='newAccBtn'>Already have Account? </Link>
+
         </form>
     </div>
     </> 
