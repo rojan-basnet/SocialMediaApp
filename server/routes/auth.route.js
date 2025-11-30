@@ -1,15 +1,15 @@
 import express from 'express'
-const authRouter=express.Router()
+const router=express.Router()
 import { delToken,signUp,login ,refreshTkn} from '../controllers/auth.controller.js'
 
 
 
-authRouter.delete('/deleteToken',delToken)
+router.delete('/deleteToken',delToken)
 
-authRouter.post('/SignUp',signUp)
+router.post('/SignUp',signUp)
 
-authRouter.post('/Login',login)
+router.post('/Login',login)
 
-authRouter.post('/refreshToken',refreshTkn)
+router.get('/refreshToken',refreshTkn)
 
-export default authRouter
+export default router

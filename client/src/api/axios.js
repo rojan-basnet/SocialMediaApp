@@ -15,9 +15,9 @@ api.interceptors.response.use(res=>res,
     async error=>{
         const originalRequest =error.config
 
-        if(error.response?.status==403){
+        if(error.response?.status==401){
             try{
-                const res=await axios.post(`${import.meta.env.VITE_API_FETCH_URL}/refreshToken`,{},{withCredentials:true})
+                const res=await axios.get(`${import.meta.env.VITE_API_FETCH_URL}/refreshToken`,{withCredentials:true})
                 const token=res.data.newToken
                 localStorage.setItem("AccessToken",token)
                 originalRequest.headers.Authorization=`Bearer ${token}`
