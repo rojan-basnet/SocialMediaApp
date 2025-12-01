@@ -170,7 +170,7 @@ const HomePage = () => {
               return(
                 <div key={ele._id} className="singlePost">
                   <div className="postHeader">  
-                    <div><img src={ele.uploaderId.profilePic ? ele.uploaderId.profilePic : "/default_pp.jpg"} className="ppOfFriends" onClick={()=>{setIsCommenting(false);navigate(`/${userId}/dashboard/${ele.uploaderId._id}`)}}/>  <div>{ele.uploaderName}</div></div>
+                    <div><img src={ele.uploaderId.profilePic ? ele.uploaderId.profilePic : "/default_pp.jpg"} className="ppOfFriends" onClick={()=>{setIsCommenting(false);navigate(`/${userId}/dashboard/${ele.uploaderId._id}`)}}/>  <div>{ele.uploaderId.name}</div></div>
                     <div className="postTime"><div>{new Date(ele.postedAt).toDateString()}</div><div>{new Date(ele.postedAt).toLocaleTimeString("en-GB",{  hour: "2-digit",minute: "2-digit"})}</div></div>
                   </div>
                     <div className="postTitle">{ele.title}</div>

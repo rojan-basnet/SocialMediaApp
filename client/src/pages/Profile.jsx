@@ -53,7 +53,7 @@ const Profile = () => {
     function handleLikeAction(postId){
     const thesePosts=[...posts]
     const thisPost=posts.find(p=>p._id==postId)
-    const thisPostIndex=posts.indexOf(thisPost)
+    const thisPostIndex=posts.indexOf(thisPost) 
 
     api.post('/postLike',{userId,postId})
     .then(res=>{
@@ -111,7 +111,8 @@ const Profile = () => {
     api.post('/friends',{userId})
     .then(res=>{
       res.data.friends.forEach(element => {
-          if(element.status==='accepted'){
+        // my cause because someuser are deleted from database
+          if(element.status==='accepted' && element.friendId){
             frnds.push(element)
           }})
           setFriends(frnds)
@@ -172,7 +173,7 @@ const Profile = () => {
                 { showFrnds &&
                   friends.map((ele,index)=>{
                     return <div key={index} onClick={()=>navigate(`/${userId}/dashboard/${ele.friendId._id}`)} >
-                      <img src={ele.friendId.profilePic?ele.friendId.profilePic:"/default_pp.jpg"} />
+                      <img src={ele.friendId?.profilePic? ele.friendId.profilePic:"/default_pp.jpg"} />
                       <h3>{ele.frndName}</h3>
                     </div>
                   })
@@ -190,7 +191,7 @@ const Profile = () => {
               return(
                 <div key={ele._id} className="singlePost">
                   <div className="postHeader">  
-                    <div>{ele.uploaderName}</div>
+                    <div>{ele.uploaderId.name}</div>
                     <div className="postTime">
                       <div>{new Date(ele.postedAt).toDateString()}</div>
                       <div>{new Date(ele.postedAt).toLocaleTimeString("en-GB",{  hour: "2-digit",minute: "2-digit"})}</div>

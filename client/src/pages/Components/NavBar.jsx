@@ -1,5 +1,5 @@
 import {MessageCircle,UserRoundPen,BellRing,Gamepad2,House,Users,UserPlus,Menu,X} from 'lucide-react'
-import { Link,useParams } from 'react-router-dom'
+import { Link,useParams ,useLocation} from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import ProfileC from './ProfileC'
 import api from '../../api/axios.js'
@@ -7,18 +7,25 @@ import './NavBar.css'
 import {toast,Toaster} from 'sonner'
 import { useGlobalState } from '../../globalStates/tabs.jsx'
 
+
 const NavBar = () => {
 const [isProfileIconClicked,setIsProfileIconClicked]=useState(false)
 const [showMobileSideBar,setShowMobileSideBar]=useState(false)
 const [showNotifiBox,setShowNotifiBox]=useState(false)
+const [pathname,setPathname]=useState()
 const {userId}=useParams()
 const {selectedTab,setSelectedTab}=useGlobalState()
+const location=useLocation()
+
+
 
 useEffect(()=>{
 localStorage.setItem("userId",userId)
 if ('serviceWorker' in navigator && 'PushManager' in window) {
     navigator.serviceWorker.register('/sw.js')
     .then(swReg => {}).catch(err => console.error(err));
+    console.log(location.pathname)
+    setPathname(location.pathname)
 }
 },[])
 
@@ -120,7 +127,7 @@ async function handleNotifiSubs(){
                   </li>
                   <li className={selectedTab =='frnds'?'active':""}>
                     <Link to={`/${userId}/dashboard/friends`} onClick={()=>{setSelectedTab('frnds')}}>
-                      <Users/> <div>Friends</div>
+                      <Users/> <div>Friends / Requests</div>
                     </Link>
                   </li>
                   <li >

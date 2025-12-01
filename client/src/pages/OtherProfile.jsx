@@ -189,7 +189,7 @@ const OtherProfile = () => {
               return(
                 <div key={ele._id} className="singlePost">
                   <div className="postHeader">  
-                    <div>{ele.uploaderName}</div>
+                    <div>{ele.uploaderId.name}</div>
                     <div className="postTime">
                       <div>{new Date(ele.postedAt).toDateString()}</div>
                       <div>{new Date(ele.postedAt).toLocaleTimeString("en-GB",{  hour: "2-digit",minute: "2-digit"})}</div>

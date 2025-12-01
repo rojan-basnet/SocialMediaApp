@@ -88,7 +88,7 @@ app.post('/uploadPost',jwtVerfiy,async(req,res)=>{
 app.get('/fetchPosts',jwtVerfiy,async (req,res)=>{ 
     const {id}=req.user
     try{
-        const posts=await Post.find().populate("uploaderId","profilePic")
+        const posts=await Post.find().populate("uploaderId","profilePic name")
         res.status(200).json({posts})
     }catch(err){
         res.status(500)
@@ -151,7 +151,7 @@ app.get('/getUserData',jwtVerfiy,async (req,res)=>{
 app.post('/getUserPost',jwtVerfiy,async (req,res)=>{
     const {postFrom}=req.body
     try{
-        const posts=await Post.find({uploaderId:postFrom}).sort({_id:-1})
+        const posts=await Post.find({uploaderId:postFrom}).populate("uploaderId","name").sort({_id:-1})
         res.status(200).json({posts})
     }catch(err){
         console.log(err)
