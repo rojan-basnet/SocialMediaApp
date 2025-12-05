@@ -1,0 +1,27 @@
+.gameCardLink {
+    text-decoration: none;
+}
+.gameCard {
+    background-color: white;
+    box-shadow: 3px 3px 10px hsl(0, 0%, 40%) ,-3px -3px 10px hsl(0, 0%, 100%) ;
+    color: hsl(0, 0%, 0%);
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+.gameCard:hover {
+    scale: 1.03;
+}
+.gameCard img {
+    border-radius: 10px;
+    width: 100%;
+    height: auto;
+    
+
+}
+.gameCard h3 {
+    text-align: center;
+
+}

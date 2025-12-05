@@ -71,7 +71,7 @@ async function handleNotifiSubs(){
               </Link>
             </li>
             <li className={selectedTab =='game'?'active':""}>
-              <Link onClick={()=>setSelectedTab('game')}>
+              <Link to={`/${userId}/dashboard/game`} onClick={()=>setSelectedTab('game')}>
                 <Gamepad2/>
               </Link>
             </li>
@@ -121,7 +121,7 @@ async function handleNotifiSubs(){
                     </Link>
                   </li>
                   <li className={selectedTab =='game'?'active':""}>
-                    <Link onClick={()=>{setSelectedTab('game')}}>
+                    <Link to={`/${userId}/dashboard/game`} onClick={()=>{setSelectedTab('game')}}>
                       <Gamepad2/><div>Games</div> 
                     </Link>
                   </li>

@@ -10,6 +10,7 @@ import HomePage from './pages/HomePage.jsx'
 import Profile from './pages/Profile.jsx'
 import OtherProfile from './pages/OtherProfile.jsx'
 import './App.css'
+import GamePage from './pages/GamePage.jsx'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<Home/>} />
+        <Route path='/:userId/dashboard/game' element={<GamePage/>} />
         <Route path='/:userId/dashboard' element={<Dashboard/>}/>
         <Route path='/signIn' element={<SignIn/>}/>
         <Route path='/logIn' element={<Login/>}/>

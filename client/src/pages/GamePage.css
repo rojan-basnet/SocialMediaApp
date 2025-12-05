@@ -1,0 +1,26 @@
+.gamesContainer {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    grid-template-rows: repeat(2,1fr);
+    gap: 20px;
+    width: 80%;
+
+}
+.gamesContainerMain {
+    background-color: hsl(0, 0%, 90%);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.gamesContainerMain h1{
+    padding-top:20px;
+    padding-bottom:20px;
+
+}
+@media (max-width:600px) {
+    .gamesContainer {
+        width: 90%;
+        grid-template-columns: repeat(1,1fr);
+        grid-template-rows: repeat(4,1fr);
+    }
+}
