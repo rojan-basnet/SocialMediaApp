@@ -221,7 +221,12 @@ const server=app.listen(PORT, ()=>{
 
 const io=new Server(server,{cors:{origin:'http://localhost:5173'}})
 const userRooms=new Map()
+const callRoom=new Map()
+let onlineUsers={};
+
 io.on('connection',async (socket)=>{
+    const userId=socket.handshake.auth.userId
+    onlineUsers[userId]=socket.id
     console.log("new Client",socket.id)
 
     socket.on('message',async (msg)=>{
@@ -241,7 +246,7 @@ io.on('connection',async (socket)=>{
             socket.emit('error',{message:"bad request"})
         }
 
-    })
+    }) 
     socket.on("joinRoom",({userId,friendId})=>{
         const roomName=[userId,friendId].sort().join("_")
         socket.join(roomName)
@@ -256,11 +261,61 @@ io.on('connection',async (socket)=>{
         socket.to(room).emit("typingStop")
     })
 
+    socket.on("callIntilized",async ({from,to})=>{
+        if(onlineUsers[to]){
+            const caller=await User.findById(from,{profilePic:1,name:1})
+            const receiver=await User.findById(to,{profilePic:1,name:1})
+
+            const callName=[from,to].sort().join("_")
+            socket.join(callName)
+            callRoom.set(socket.id,callName)
+
+
+            socket.to(onlineUsers[to]).emit("callReceived",{pp:caller.profilePic,name:caller.name,id:caller.id})
+            socket.emit("callReceiverStatus",{status:"online",pp:receiver.profilePic,name:receiver.name,id:receiver.id})
+        }
+        else
+            socket.emit("callReceiverStatus",{status:"offline"})
+    })
+
+    socket.on("callCancel",({from,to})=>{
+        if(onlineUsers[to]){
+            socket.to(onlineUsers[to]).emit("callCancel")
+        }
+    })
+    socket.on("joinSignallingServer",({from,to})=>{
+            const callName=[from,to].sort().join("_")
+            socket.join(callName)
+            callRoom.set(socket.id,callName)
+    })
+    socket.on("callAnswer",({from,to,ans})=>{
+
+        if(ans=="accepted"){
+            socket.to(onlineUsers[from]).emit("callAccepted")
+            
+        }else if(ans=="rejected"){
+            socket.to(onlineUsers[from]).emit("callRejected")
+        }
+    })
+
+    socket.on("candidate",(data)=>{
+        const room=callRoom.get(socket.id)
+        socket.to(room).emit("candidate", data);
+    })
+    socket.on("offer",(offer)=>{
+        const room=callRoom.get(socket.id)
+        socket.to(room).emit("offer", offer);
+    })
+    socket.on("answer",(ans)=>{
+        const room=callRoom.get(socket.id)
+        socket.to(room).emit("answer",ans)
+    })
     socket.on('disconnect',()=>{
         const room=userRooms.get(socket.id)
         userRooms.delete(socket.id)
+        delete onlineUsers[userId]
         socket.to(room).emit("typingStop")
-        console.log("client left",socket.id)
+        console.log("client left",socket.id) 
     })
 })
 

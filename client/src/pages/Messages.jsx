@@ -3,10 +3,14 @@ import { useParams } from "react-router-dom"
 import './Messages.css'
 import api from "../api/axios.js"
 import NavBar from "./Components/NavBar.jsx"
-import {io} from 'socket.io-client'
 import TypingBubble from "./Components/TypingBubble.jsx"
 import { SendHorizonal,ArrowLeft,X,UserPlus } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import { useSocket } from "../globalStates/socket.jsx"
+import {toast,Toaster} from 'sonner'
+import CallSection from "./Components/CallPage.jsx"
+import { startCamera,stopCamera } from "./Components/heplerFunctions/startCam.js"
+import { startPeerConnection } from "./Components/heplerFunctions/peerConnection.js"
 
 const Messages = () => {
 const {userId}=useParams()
@@ -18,7 +22,13 @@ const [isTyping,setIsTyping]=useState(false)
 const socketRef=useRef()
 const [showMobileSideBar,setShowMobileSideBar]=useState(false)
 const navigate=useNavigate()
+const socket=useSocket();
 const messagesEndRef = useRef(null)
+const [callState,setCallState]=useState("pending")
+const [isCalling,setIsCalling]=useState(false)
+const [callReceiver,setCallReceiver]=useState(null)
+const [lclStreamReady,setLclStreamReady]=useState(false)
+const streamRef=useRef(null)
 
 
 const scrollToBottom = () => {
@@ -47,15 +57,62 @@ function handleFriendsFetch(){
 }
 
 useEffect(()=>{
-    const socket=io(`${import.meta.env.VITE_API_FETCH_URL}`)
-    socketRef.current=socket
-    handleFriendsFetch()
-    socket.on("message",(msg)=>{setAllMessages(prev=>[...prev,msg]);setIsTyping(false)})
-    socket.on("typing",()=>{setIsTyping(true)})
-    socket.on("typingStop",()=>{setIsTyping(false)})
-    return ()=>socket.disconnect()
 
-},[])
+    if(socket){
+    handleFriendsFetch()
+
+        socketRef.current=socket
+        socket.on("message",(msg)=>{setAllMessages(prev=>[...prev,msg]);setIsTyping(false)})
+        socket.on("typing",()=>{setIsTyping(true)})
+        socket.on("typingStop",()=>{setIsTyping(false)})
+
+        socket.on("callReceiverStatus",(data)=>{
+            const {status}=data
+
+            if(status=="online"){
+                setIsCalling(true)
+                const {pp,id,name}=data
+                setCallReceiver({pp,id,name})
+            }else if(status=="offline"){
+                setIsCalling(false)
+                toast.info("User is offline");
+            }
+
+
+        })
+          socket.on("callAccepted",()=>{
+                console.log("the call was accepted")
+                setCallState("accepted")
+               // handleMineVidSend(streamRef.current)
+
+            })
+
+            socket.on("callRejected",()=>{
+                console.log("the call was rejected")
+
+                setCallState("rejected")
+                setTimeout(()=>{
+                    setIsCalling(false)
+                },1000)
+
+                handleCallEnd("fromReceiver")
+
+            })
+            
+        return () => {
+            socket.off("message");
+            socket.off("typing");
+            socket.off("typingStop");
+            socket.off("callReceived");
+            socket.off("callReceiverStatus");
+            socket.off("c")
+        };
+        
+    } 
+
+
+
+},[socket])
 
 function handleMsgSent(e){
     e.preventDefault();
@@ -92,9 +149,48 @@ function handleMessageTyping(typingText){
     }
 
 }
+function handleCallEnd(from){
+
+    if(!from=="fromReceiver"){
+        socket.emit("callCancel",{from:userId,to:selectedChat.friendId._id})
+    }
+        setIsCalling(false)
+        setCallState("pending")
+        stopCamera(streamRef)
+        setLclStreamReady(false)
+
+
+}
+function handleCall(type,otherId){
+    if(type=="audio"){
+        socketRef.current.emit("callIntilized",{from:userId,to:otherId})
+        console.log("audio call initilized",{from:userId,to:otherId})
+
+    }else if(type=="video"){
+        socketRef.current.emit("callIntilized",{from:userId,to:otherId})
+
+        startPeerConnection(socketRef.current) 
+        .then(stream=>{
+            streamRef.current=stream
+            setLclStreamReady(true)
+
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    }
+}
+
   return (
     <>
+        <Toaster/>
         <NavBar/>
+        {
+            isCalling && callReceiver && lclStreamReady&&
+            <CallSection onEndCall={handleCallEnd} 
+            name={callReceiver.name} img={callReceiver.pp} 
+            status={callState} mineVid={streamRef}/>
+        }
         <div className="mainContainerMSG">
             <div className="friendsDisplay">
                 <ul>
@@ -142,6 +238,10 @@ function handleMessageTyping(typingText){
                         <ArrowLeft className="backIcon" onClick={()=>setShowMobileSideBar(true)}/>
                         <img src={selectedChat.friendId.profilePic?selectedChat.friendId.profilePic:"/default_pp.jpg"}/>
                         <div>{selectedChat.frndName}</div>
+                        <div>
+                            <button onClick={()=>handleCall("audio",selectedChat.friendId._id)} disabled={isCalling}>audio</button>
+                            <button onClick={()=>handleCall("video",selectedChat.friendId._id)} disabled={isCalling}>video</button>
+                        </div>
                     </div>
  
                     <div className="chatBoxRest"> 

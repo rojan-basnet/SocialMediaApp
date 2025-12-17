@@ -184,7 +184,7 @@ const HomePage = () => {
                       </div>
                     }{
                       ele.video?.length==1 && <div className="postImages">
-                        <video src={ele.video[0]} controls />
+                        <video src={ele.video[0] || null} controls />
                       </div>
                     }
                     {

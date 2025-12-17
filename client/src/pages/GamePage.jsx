@@ -3,7 +3,7 @@ import GameCard from "./Components/GameCard.jsx"
 import { gameLinks } from "../constants/index.js"
 import './GamePage.css'
 const GamePage = () => {
-console.log(gameLinks)
+
   return (
     <main>
         <NavBar/>
