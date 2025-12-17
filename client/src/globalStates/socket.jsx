@@ -10,7 +10,7 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     const userId=localStorage.getItem("userId")
     if(userId){
-      socketRef.current = io("http://localhost:5000",{autoConnect: false});
+      socketRef.current = io(`${import.meta.env.VITE_API_FETCH_URL}`,{autoConnect: false});
       setSocket(socketRef.current)
     return () => {
       //socketRef.current.removeAllListeners();
