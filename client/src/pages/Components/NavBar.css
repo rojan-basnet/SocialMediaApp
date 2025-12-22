@@ -1,173 +1,164 @@
-.navBar{
-    background-color: hsl(0, 0%, 100%);
-    box-shadow: 1px 1px 5px rgba(188, 188, 188, 0.719);
-    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 10vh;
-    padding: 5px;
-}
-.navBar ul{
-    display: flex;
-    justify-content: center; 
-    align-items: center;
-    gap: 5px;
-    padding: 0;
-}
-.navBar ul li{
-    list-style: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px 0;
-    transition:  background-color .5s ease;
-}
-.navBar >ul >li >a{
-    border-radius: 50%;
-    background-color: hsl(0, 0%, 90%);
-    color: hsl(0, 0%, 0%);
-    padding: 10px;
-}
-
-.navBar  > .end >  li >div:first-child{
-    border-radius: 50%;
-    background-color: hsl(0, 0%, 90%);
-    color: hsl(0, 0%, 0%);
-    padding: 10px;
+/* ===== NAVBAR BASE (UNCHANGED THEME) ===== */
+.navBar {
+  background-color: hsl(0, 0%, 100%);
+  display: flex;
+  box-shadow: 1px 1px 2px hsl(0, 0%, 0%,.5);
+  justify-content: space-between;
+  align-items: center;
+  height: 10vh;
+  padding: 5px;
+  width: 100%;
+  position: sticky;
+  z-index: 800;
 
 }
-.navBar  > .end >  .active > div:first-child{
-    background-color: hsl(209, 100%, 40%); 
-    color: rgb(255, 255, 255);
+
+.navBar ul {
+  height: 90%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.logo img {
+  width: 50px;
+  height: 50px;
 }
 
-.navBar >ul >li:hover{
-    cursor: pointer;
-    border-bottom:5px solid hsl(0, 0%, 80%); 
-}
-.navBar ul >li.active {
-    border-bottom:5px solid  hsl(209, 100%, 40%);                
-}
-.navBar >ul .active >a {
-    background-color: hsl(209, 100%, 40%); 
-    color: rgb(255, 255, 255);
-}
-.logo a{
-    border-radius: 0;
-    text-decoration: none;
-    background-color: none;
-    color: black;
+.navBar ul li {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 0;
 }
 
-.navBar .fourth{
-    display:none;
-
-}
-.navBar > .fourth  i {
-    background-color: red;
-}
-.mobileSideNav{ 
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    min-height: 100vh;
-    display: none;
-    z-index: 999;
-}
-.mobileSideNav .middleMan{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.306);
-    backdrop-filter: blur(5px);
-}
-.mobileSideNav .middleMan ul{
-    background-color: white;
-    width: clamp(250px,50%,400px);
-    transition: left 1s ease;
-    animation: slideIn 0.4s ease forwards;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    height: 100%;
-    gap: 10px;
-    padding: 10px;
-    overflow-y: auto;
-}
-.mobileSideNav .middleMan ul li{
-    padding: 0;
-    width: 100%;
-    border-radius: 0;
-    background-color: hsl(0, 0%, 90%);
-}
-.mobileSideNav .middleMan >ul >li:last-child {
-    display: flex;
-    flex-direction: column;
-}
-.mobileSideNav .middleMan ul li:last-child div:first-child{
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
-    padding: 10px;
-}
-.mobileSideNav .middleMan ul li:last-child >div:nth-child(2){
-    width: 100%;
+/* ===== ICON BUTTON BASE ===== */
+.navBar > ul > li > a {
+  border-radius: 50%;
+  background-color: hsl(0, 0%, 90%);
+  color: hsl(0, 0%, 0%);
+  padding: 10px;
+  transition: all 0.3s ease;
 }
 
-.profilCHeader{
-    width: 100%;
+/* ===== DESKTOP ACTIVE STATE (BLUE) ===== */
+.navBar > ul > li > a.active {
+  background-color: hsl(209, 100%, 40%);
+  color: #ffffff;
+  transform: scale(1.05);
 }
-.mobileSideNav .middleMan ul li:hover{
-    cursor: pointer;
-    background-color:hsl(0, 0%, 80%); 
+
+/* ===== HOVER (DESKTOP ONLY) ===== */
+.navBar > ul > li > a:hover {
+  background-color: hsl(214, 100%, 80%);
 }
-.mobileSideNav .middleMan >ul >li a{
-    text-decoration: none;
-    padding: 10px;
-    width: 100%;
-    height: 100%;
-    color: #000;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
+
+/* ===== END SECTION (PROFILE / NOTIFICATIONS) ===== */
+.navBar > .end > li > div:first-child {
+  border-radius: 50%;
+  background-color: hsl(0, 0%, 90%);
+  color: hsl(0, 0%, 0%);
+  padding: 10px;
+  transition: all 0.3s ease;
+}
+
+.navBar > .end > .active > div:first-child {
+  background-color: hsl(209, 100%, 40%);
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+}
+
+/* ===== MOBILE ICON (UNCHANGED) ===== */
+.navBar .fourth {
+  display: none;
+}
+
+/* ================= MOBILE NAV (UNCHANGED) ================= */
+
+.mobileSideNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  min-height: 100vh;
+  display: none;
+  z-index: 999;
+}
+
+.mobileSideNav .middleMan {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.306);
+  backdrop-filter: blur(5px);
+}
+
+.mobileSideNav .middleMan ul {
+  background-color: white;
+  width: clamp(250px, 50%, 400px);
+  animation: slideIn 0.4s ease forwards;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 10px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.mobileSideNav .middleMan ul li {
+  width: 100%;
+  background-color: hsl(0, 0%, 90%);
+}
+
+.mobileSideNav .middleMan ul li:hover {
+  background-color: hsl(0, 0%, 80%);
+}
+
+.mobileSideNav .middleMan > ul > li a {
+  text-decoration: none;
+  padding: 10px;
+  width: 100%;
+  color: #000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
 }
-.mobileSideNav .backBtn{
-    margin-left: auto;
-    cursor: pointer;
-    
+.mobileSideNav ul>li:last-child >a {
+  align-items: flex-start;
+  flex-direction: column;
+  width: 100%;
 }
-.mobileSideNav .middleMan .active >a{
-    background-color: rgb(220, 246, 255);
+/* MOBILE ACTIVE (KEEP ORIGINAL LOOK) */
+.mobileSideNav .middleMan .active > a {
+  background-color: rgb(220, 246, 255);
 }
+/* ===== ANIMATION ===== */
 @keyframes slideIn {
-    from {
-        transform: translateX(-100%);
-    }
-    to {
-        transform: translateX(0);
-    }
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
-@media (max-width:600px) {
-    .navBar .center{
-        display: none;
-    }
-    .navBar .end{
-        display: none;
-    }
-    .navBar .fourth{
-        display: block;
-    }
-    .navBar {
-        padding: 0 20px;
-    }
-    .mobileSideNav {
-        display: block;
-    }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .navBar .center,
+  .navBar .end {
+    display: none;
+  }
+
+  .navBar .fourth {
+    display: block;
+  }
+
+  .navBar {
+    padding: 0 20px;
+  }
+
+  .mobileSideNav {
+    display: block;
+  }
 }
+

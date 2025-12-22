@@ -116,7 +116,6 @@
 .otherUserVideo video {
   max-width: auto;
   height: 100%;
-  transform: scaleX(-1);
 }
 
 /* Responsive tweaks */

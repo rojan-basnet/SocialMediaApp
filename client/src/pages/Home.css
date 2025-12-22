@@ -24,6 +24,9 @@
     font-size: 1rem;
     width: 80%;
 }
+.homeSignInForm form >input{
+    border: 1px solid;
+}
 .homeSignInForm form button{
     border: none;
     background-color: hsl(208, 100%, 20%);

@@ -1,0 +1,35 @@
+.call-container {
+  display: flex;
+}
+
+.call-container button {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 20%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  background-color: white;
+}
+
+.call-container button img {
+  width: 22px;
+  height: 22px;
+}
+
+.call-container button:hover:not(:disabled) {
+  background-color: #ededed;
+  transform: scale(1.05);
+}
+
+.call-container button:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.call-container button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

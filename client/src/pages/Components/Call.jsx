@@ -1,19 +1,15 @@
-import { Video,Phone } from "lucide-react"
+import "./Call.css"
 
-
-const Call = () => {
-
-    function handleAudioCall(){
-        
-        return; 
-    }
-    function handleVidCall(){
-        return ;
-    }
+const Call = ({ handleAudioCall, handleVidCall, disabled }) => {
   return (
-    <div>
-        <Video strokeWidth="1px" className="videoCallIcon" onClick={handleVidCall}/>
-        <Phone strokeWidth="1px" className="audioCallIcon" onClick={handleAudioCall}/>
+    <div className="call-container">
+      <button onClick={handleAudioCall} disabled={disabled}>
+        <img src="/call/audio.svg" alt="audio call" />
+      </button>
+
+      <button onClick={handleVidCall} disabled={disabled}>
+        <img src="/call/video.svg" alt="video call" />
+      </button>
     </div>
   )
 }

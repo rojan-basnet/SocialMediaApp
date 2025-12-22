@@ -21,3 +21,62 @@ export const gameLinks=[
     },
 
 ]
+import {
+  House,
+  UserPlus,
+  Gamepad2,
+  Users,
+  BellRing,
+  MessageCircle,
+  UserRoundPen,
+} from "lucide-react";
+
+export const navlinks = {
+  middle: [
+    {
+      id: "home",
+      icon: House,
+      path: "dashboard/home",
+      tab: "home",
+    },
+    {
+      id: "addFrnds",
+      icon: UserPlus,
+      path: "dashboard/addFriends",
+      tab: "addFrnds",
+    },
+    {
+      id: "game",
+      icon: Gamepad2,
+      path: "dashboard/game",
+      tab: "game",
+    },
+    {
+      id: "frnds",
+      icon: Users,
+      path: "dashboard/friends",
+      tab: "frnds",
+    },
+  ],
+
+  end: [
+    {
+      id: "notifications",
+      icon: BellRing,
+      tab: "notifications",
+      path: "",
+    },
+    {
+      id: "chats",
+      icon: MessageCircle,
+      path: "dashboard/messages",
+      tab: "chats",
+    },
+    {
+      id: "account",
+      icon: UserRoundPen,
+      tab: "Account",
+      path: "",
+    },
+  ],
+};

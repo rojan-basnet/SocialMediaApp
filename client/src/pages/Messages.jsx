@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom"
 import { useSocket } from "../globalStates/socket.jsx"
 import {toast,Toaster} from 'sonner'
 import CallSection from "./Components/CallPage.jsx"
+import Call from './Components/Call.jsx'
 import { startCamera,stopCamera } from "./Components/heplerFunctions/startCam.js"
 import { startPeerConnection } from "./Components/heplerFunctions/peerConnection.js"
 
@@ -73,6 +74,17 @@ useEffect(()=>{
                 setIsCalling(true)
                 const {pp,id,name}=data
                 setCallReceiver({pp,id,name})
+
+                startPeerConnection(socketRef.current) 
+                .then(stream=>{
+                    streamRef.current=stream
+                    setLclStreamReady(true)
+
+                })
+                .catch(err=>{
+                    console.log(err)
+                })
+
             }else if(status=="offline"){
                 setIsCalling(false)
                 toast.info("User is offline");
@@ -168,16 +180,6 @@ function handleCall(type,otherId){
 
     }else if(type=="video"){
         socketRef.current.emit("callIntilized",{from:userId,to:otherId})
-
-        startPeerConnection(socketRef.current) 
-        .then(stream=>{
-            streamRef.current=stream
-            setLclStreamReady(true)
-
-        })
-        .catch(err=>{
-            console.log(err)
-        })
     }
 }
 
@@ -235,12 +237,21 @@ function handleCall(type,otherId){
                 selectedChat &&
                  <div className="chatBoxMain">
                     <div className="chatBoxTop">
-                        <ArrowLeft className="backIcon" onClick={()=>setShowMobileSideBar(true)}/>
-                        <img src={selectedChat.friendId.profilePic?selectedChat.friendId.profilePic:"/default_pp.jpg"}/>
-                        <div>{selectedChat.frndName}</div>
-                        <div>
-                            <button onClick={()=>handleCall("audio",selectedChat.friendId._id)} disabled={isCalling}>audio</button>
-                            <button onClick={()=>handleCall("video",selectedChat.friendId._id)} disabled={isCalling}>video</button>
+
+                        <div className="chatInfo">
+                            <ArrowLeft className="backIcon" onClick={()=>setShowMobileSideBar(true)}/>
+                            <img src={selectedChat.friendId.profilePic?selectedChat.friendId.profilePic:"/default_pp.jpg"}/>
+                            <div>{selectedChat.frndName}</div>
+                        </div>
+
+
+                        <div className="callSection">
+                            <Call 
+                                handleAudioCall={()=>handleCall("audio",selectedChat.friendId._id)}
+                                handleVidCall={()=>handleCall("video",selectedChat.friendId._id)}
+                                disabled={isCalling}
+                            />
+
                         </div>
                     </div>
  
