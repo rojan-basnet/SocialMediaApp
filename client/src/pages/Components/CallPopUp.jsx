@@ -10,7 +10,7 @@ const CallPopUp = ({img,name,callAns}) => {
           <Phone className="phoneIcon"/>
         </button>
         <button onClick={()=>{callAns("rejected");console.log("reject call")}}>
-          <PhoneMissed className="phoneIcon"/>
+          <PhoneMissed className="phoneIcon"/> 
         </button>
     </div>
   )

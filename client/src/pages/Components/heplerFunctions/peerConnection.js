@@ -1,7 +1,8 @@
 let pc;
 
 import { startCamera } from "./startCam";
-export const startPeerConnection=async (socket)=>{
+export const startPeerConnection=async (socket,receiverStreamRef)=>{
+    console.log({receiverStreamRef})
     startP2PConn()
 
     const stream=await startCamera()
@@ -15,17 +16,21 @@ export const startPeerConnection=async (socket)=>{
 
 
     pc.ontrack = (event) => {
-        console.log({event},"track from receiver remote vid")
+        receiverStreamRef.current=event.streams[0]
+        console.log({receiverStreamRef})
+
+        console.log(event.streams[0],"track from receiver remote vid")
     };
 
     const offer = await pc.createOffer();
+    console.log("sending offer",offer)
     socket.emit("offer", offer);
     await pc.setLocalDescription(offer);
 
 
     return stream;
-    
 }
+
 function startP2PConn(){
     if(!pc){
         pc = new RTCPeerConnection({
@@ -55,6 +60,7 @@ export const handleMineVidSend=async (stream)=>{
 
 
 export const receiveIceCandidate=async (data)=>{
+    console.log("getting ice candidates",data)
     let pendingCandidate=[];
 
     const candidate=data.candidate
@@ -62,6 +68,7 @@ export const receiveIceCandidate=async (data)=>{
     if(!pc) startP2PConn()
     if (!candidate) return console.log("no ice candidates");
     try {
+
         const iceCandidateInit = {
             candidate: data.candidate,
             sdpMid: data.sdpMid,
@@ -74,7 +81,9 @@ export const receiveIceCandidate=async (data)=>{
             await pc.addIceCandidate(new RTCIceCandidate(candidate));
             }
             pendingCandidate = [];
-        }else pendingCandidate.push(iceCandidateInit)
+        }else 
+            pendingCandidate.push(iceCandidateInit)
+
     } catch (e) {
         console.error("Error adding ICE candidate:", e);
     }
@@ -87,7 +96,7 @@ export const showCallerVid=(vid)=>{
 }
 
 export const handleOffer=async(offer,socket,callerStreamRef)=>{
-
+    console.log("offer received",offer)
     startP2PConn()
 
     pc.onicecandidate = event => {
@@ -101,15 +110,22 @@ export const handleOffer=async(offer,socket,callerStreamRef)=>{
         callerStreamRef.current=event.streams[0]
         //showCallerVid(event.streams[0]);
     };
+     
+    const stream=await startCamera()
+    handleRemoteVidSend(stream)
 
-    await pc.setRemoteDescription(new RTCSessionDescription(offer));
+    await pc.setRemoteDescription(new RTCSessionDescription(offer)); 
 
     const answer = await pc.createAnswer();
     await pc.setLocalDescription(answer);
 
+    console.log("sending answer",answer)
     socket.emit("answer", answer);
+
+    return stream;
 }
 
 export const handleAnswer=async(answer)=>{
+    console.log("answer received",answer)
     await pc.setRemoteDescription(new RTCSessionDescription(answer));
 }

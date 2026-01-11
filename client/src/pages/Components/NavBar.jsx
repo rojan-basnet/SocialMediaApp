@@ -1,4 +1,4 @@
-import { MessageCircle, UserRoundPen, BellRing, Gamepad2, House, Users, UserPlus, Menu, X } from 'lucide-react'
+import { MessageCircle, UserRoundPen, BellRing, Gamepad2, House, Users, UserPlus, Menu, X, HandMetal, LucideFileSpreadsheet } from 'lucide-react'
 import { Link, useParams, useLocation, NavLink } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react'
 import ProfileC from './ProfileC'
@@ -60,15 +60,25 @@ const NavBar = () => {
       socket.on("callCancel", () => {
         setIsReceivingCall(false)
       })
+      socket.on("callEnd", () => {
+        stopCamera(streamRef)
+        setOnCall(false)
+        setLclStreamReady(false)
+      })
       socket.on("candidate", (data) => {
         receiveIceCandidate(data)
       })
       socket.on("offer", (offer) => {
         handleOffer(offer, socket, callerStreamRef)
+          .then(stream => {
+            streamRef.current = stream
+            setLclStreamReady(true)
+          })
+          .catch(err => {
+            console.log(err)
+          })
       })
-      socket.on("answer", (ans) => {
-        handleAnswer(ans)
-      })
+
     }
   }, [socket])
 
@@ -82,16 +92,6 @@ const NavBar = () => {
     }
     else if (ans == "accepted") {
       setOnCall(true)
-
-      startCamera()
-        .then(stream => {
-          streamRef.current = stream
-          handleRemoteVidSend(stream)
-          setLclStreamReady(true)
-        })
-        .catch(err => {
-          console.log(err)
-        })
 
     }
   }
@@ -124,7 +124,9 @@ const NavBar = () => {
     <>
       {
         onCall && lclStreamReady &&
-        <CallSection name={caller.name} img={caller.pp} onEndCall={handleCallEnd} mineVid={streamRef} otherVid={callerStreamRef} />
+        <CallSection name={caller.name} img={caller.pp}
+          onEndCall={handleCallEnd} mineVid={streamRef}
+          otherVid={callerStreamRef} />
       }
       {isReceivingCall && caller &&
         <CallPopUp img={caller.pp}
@@ -137,7 +139,7 @@ const NavBar = () => {
 
         <Link to={`/${userId}/dashboard/home`} onClick={() => setSelectedTab('home')}
           className='h-full bg-amber-50 '>
-          <img src="/logo.png" alt="logo" className='h-full w-auto'/>
+          <img src="/logo.png" alt="logo" className='h-full w-auto' />
         </Link>
 
         <ul className='center'>
@@ -180,9 +182,10 @@ const NavBar = () => {
 
         </ul>
 
-        <ul className='fourth' onClick={() => { setShowMobileSideBar(true) }}>
+        <ul className='fourth flex justify-center' onClick={() => { setShowMobileSideBar(true) }}>
           <Menu />
         </ul>
+
         {
           showMobileSideBar && <div className='mobileSideNav'>
             <div className='middleMan' onClick={() => { setShowMobileSideBar(false); setIsProfileIconClicked(false) }}>

@@ -15,12 +15,13 @@ useEffect(() => {
   if(mineVid?.current && videoRef.current){
     videoRef.current.srcObject = mineVid.current;
   }
-  console.log({otherVid,otherVedioRef,videoRef})
-  if(otherVid?.current && otherVedioRef.current){
 
-    console.log(otherVid.current)
+  console.log({otherVid,mineVid})
+
+  if(otherVid?.current && otherVedioRef.current){
     otherVedioRef.current.srcObject = otherVid.current;
   }
+
 }, [mineVid,otherVid]);
 
 function showStatusMessage(state){
@@ -44,15 +45,15 @@ if(state=="pending"){
           <span>{showStatusMessage(status)}</span>
         </div>
       </div>
-      <div className="mineVid">
+      <div className="mineVid" style={{borderRadius:'20px'}}>
         {
-          mineVid ? <video ref={videoRef} autoPlay playsInline muted />:<VidSkel/>
+          mineVid ? <video ref={videoRef} autoPlay playsInline muted />:<VidSkel/> 
         }
         
       </div>
       <div className="otherUserVideo">
         {
-          otherVid ? <video ref={otherVedioRef} autoPlay playsInline />:<VidSkel/>
+          otherVid ? <video ref={otherVedioRef} autoPlay playsInline />:<div>mewo<VidSkel/></div>
         }
       </div>
 
@@ -63,7 +64,7 @@ if(state=="pending"){
         <button className="control-btn" onClick={()=>setVideoON(prev=>!prev)}>
           {videoOn ? <Video size={24} /> :<VideoOff size={24} />}
         </button>
-        <button className="control-btn end-call" onClick={onEndCall}>
+        <button className="control-btn end-call" onClick={()=>onEndCall("fromSender")}>
           <X size={28} />
         </button>
       </div>
